@@ -1,0 +1,365 @@
+{% extends "base.html" %} {% block content %}
+<section
+  class="vh-100 d-flex align-items-center"
+  data-bgimage="url({{ url_for('static', filename='images/background/7.jpg') }}) top"
+>
+  <div class="container">
+    <div class="row align-items-center pt-60">
+      <div class="col-lg-6">
+        <h4 class="mb-20">
+          <span class="text-primary fs-20">Plan your trip now</span>
+        </h4>
+        <h1 class="fs-52 mb-20">Explore the world with comfortable car</h1>
+        <p class="lead mb-20">
+          Embark on unforgettable adventures and discover the world in
+          unparalleled comfort and style with our fleet of exceptionally
+          comfortable cars.
+        </p>
+        <a
+          class="btn btn-primary font-title fw-800 fs-14 py-1 px-30 me-2"
+          href="#"
+          >Choose a Car</a
+        ><a class="btn btn-dark font-title fw-800 fs-14 py-1 px-30" href="#"
+          >Get the App</a
+        >
+      </div>
+      <div class="col-lg-6">
+        <img
+          src="{{ url_for('static', filename='images/misc/car-2.png') }}"
+          class=""
+          alt=""
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mb-90">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 text-center mb-40">
+        <h2 class="mb-20 fs-42 fw-bolder">Our Vehicle Fleet</h2>
+        <p class="mb-20 text-gray-40">
+          Driving your dreams to reality with an exquisite fleet of versatile
+          vehicles for unforgettable journeys.
+        </p>
+      </div>
+      <ul
+        id="items-carousel"
+        class="my-slider d-flex justify-content-center"
+      ></ul>
+    </div>
+  </div>
+</section>
+
+<section class="mb-90">
+  <div class="container">
+    <div class="row align-items-center flex-row-reverse">
+      <div class="col-md-6 quality-img">
+        <div
+          class="background-image"
+          data-bgimage="url({{ url_for('static', filename='images/background/5.jpg') }}) center"
+        ></div>
+      </div>
+      <div class="col-lg-5 py-90">
+        <h2 class="fs-42 fw-bolder mb-30">Only Quality For Clients</h2>
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="pills-home-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-home"
+              type="button"
+              role="tab"
+              aria-controls="pills-home"
+              aria-selected="true"
+            >
+              Luxury
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="pills-profile-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-profile"
+              type="button"
+              role="tab"
+              aria-controls="pills-profile"
+              aria-selected="false"
+            >
+              Comfort
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="pills-contact-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-contact"
+              type="button"
+              role="tab"
+              aria-controls="pills-contact"
+              aria-selected="false"
+            >
+              Prestige
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <div
+            class="tab-pane fade show active"
+            id="pills-home"
+            role="tabpanel"
+            aria-labelledby="pills-home-tab"
+          >
+            <p>
+              We offer a meticulously curated collection of the most
+              sought-after luxury vehicles on the market. Whether you prefer the
+              sporty allure of a high-performance sports car, the sophistication
+              of a sleek and luxurious sedan, or the versatility of a premium
+              SUV, we have the perfect car to match your discerning taste.
+            </p>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="pills-profile"
+            role="tabpanel"
+            aria-labelledby="pills-profile-tab"
+          >
+            <p>
+              We prioritize your comfort and convenience throughout your
+              journey. We understand that a comfortable ride can make a world of
+              difference, whether you're embarking on a business trip or
+              enjoying a leisurely vacation. That's why we offer a wide range of
+              well-maintained, comfortable cars that cater to your specific
+              needs.
+            </p>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="pills-contact"
+            role="tabpanel"
+            aria-labelledby="pills-contact-tab"
+          >
+            <p>
+              We understand that prestige goes beyond luxury. It's about making
+              a statement, embracing sophistication, and indulging in the finer
+              things in life. That's why we offer an exclusive selection of
+              prestigious cars that exude elegance, style, and status.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mb-90">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <h2 class="fs-42 fw-bold">Explore the world with comfortable car</h2>
+      </div>
+      <div class="col-md-3">
+        <i class="fa fa-trophy de-icon mb20"></i>
+        <h4 class="fs-20 fw-bolder">First Class Services</h4>
+        <p class="text-gray-40">
+          Where luxury meets exceptional care, creating unforgettable moments
+          and exceeding your every expectation.
+        </p>
+      </div>
+      <div class="col-md-3">
+        <i class="fa fa-road de-icon mb20"></i>
+        <h4 class="fs-20 fw-bolder">24/7 road assistance</h4>
+        <p class="text-gray-40">
+          Reliable support when you need it most, keeping you on the move with
+          confidence and peace of mind.
+        </p>
+      </div>
+      <div class="col-md-3">
+        <i class="fa fa-map-pin de-icon mb20"></i>
+        <h4 class="fs-20 fw-bolder">Free Pick-Up & Drop-Off</h4>
+        <p class="text-gray-40">
+          Enjoy free pickup and drop-off services, adding an extra layer of ease
+          to your car rental experience.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="evaluate mb-90">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-info">
+            <div class="icon id-color">
+              <i class="fa fa-quote-right"></i>
+            </div>
+            <h4>Excellent Service! Car Rent Service!</h4>
+            <p>
+              I have been using Rentaly for my Car Rental needs for over 5 years
+              now. I have never had any problems with their service. Their
+              customer support is always responsive and helpful. I would
+              recommend Rentaly to anyone looking for a reliable Car Rental
+              provider.
+              <span class="by">Stepanie Hutchkiss</span>
+            </p>
+          </div>
+          <img
+            src="{{ url_for('static', filename='images/testimonial/1.jpg') }}"
+            alt=""
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-info">
+            <div class="icon id-color">
+              <i class="fa fa-quote-right"></i>
+            </div>
+            <h4>Excellent Service! Car Rent Service!</h4>
+            <p>
+              We have been using Rentaly for our trips needs for several years
+              now and have always been happy with their service. Their customer
+              support is Excellent Service! and they are always available to
+              help with any issues we have. Their prices are also very
+              competitive.
+              <span class="by">Jovan Reels</span>
+            </p>
+          </div>
+          <img
+            src="{{ url_for('static', filename='images/testimonial/2.jpg') }}"
+            alt=""
+          />
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-info">
+            <div class="icon id-color">
+              <i class="fa fa-quote-right"></i>
+            </div>
+            <h4>Excellent Service! Car Rent Service!</h4>
+            <p>
+              Endorsed by industry experts, Rentaly is the Car Rental solution
+              you can trust. With years of experience in the field, we provide
+              fast, reliable and secure Car Rental services.
+              <span class="by">Kanesha Keyton</span>
+            </p>
+          </div>
+          <img
+            src="{{ url_for('static', filename='images/testimonial/3.jpg') }}"
+            alt=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mb-120">
+  <div class="container">
+    <div class="d-flex justify-content-center mb-40">
+      <div class="w-50 text-center">
+        <h2 class="fs-42 fw-bold">Latest News</h2>
+        <p class="text-gray-40">
+          Breaking news, fresh perspectives, and in-depth coverage - stay ahead
+          with our latest news, insights, and analysis.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="rounded-top overflow-hidden position-relative">
+          <div class="date-box">
+            <div class="d">10</div>
+            <div class="m">MAR</div>
+          </div>
+          <img
+            alt=""
+            src="{{ url_for('static', filename='images/news/pic-blog-1.jpg') }}"
+            class="rounded-top"
+          />
+        </div>
+        <div class="px-30 pt-30 h-50">
+          <h4 class="mb-10">
+            <a class="fs-20 link-gray fw-bold" href="news-single.html"
+              >Enjoy Best Travel Experience<span></span
+            ></a>
+          </h4>
+          <p class="text-gray-40 mb-20">
+            Dolore officia sint incididunt non excepteur ea mollit commodo ut
+            enim reprehenderit cupidatat labore ad laborum consectetur.
+          </p>
+          <a class="btn btn-primary font-title fw-800 fs-14 px-4" href="#"
+            >Read More</a
+          >
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="rounded-top overflow-hidden position-relative">
+          <div class="date-box">
+            <div class="d">12</div>
+            <div class="m">MAR</div>
+          </div>
+          <img
+            alt=""
+            src="{{ url_for('static', filename='images/news/pic-blog-2.jpg') }}"
+            class="rounded-top"
+          />
+        </div>
+        <div class="px-30 pt-30 h-50">
+          <h4 class="mb-10">
+            <a class="fs-20 link-gray fw-bold" href="news-single.html"
+              >The Future of Car Rent<span></span
+            ></a>
+          </h4>
+          <p class="text-gray-40 mb-20">
+            Dolore officia sint incididunt non excepteur ea mollit commodo ut
+            enim reprehenderit cupidatat labore ad laborum consectetur.
+          </p>
+          <a class="btn btn-primary font-title fw-800 fs-14 px-4" href="#"
+            >Read More</a
+          >
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="rounded-top overflow-hidden position-relative">
+          <div class="date-box">
+            <div class="d">14</div>
+            <div class="m">MAR</div>
+          </div>
+          <img
+            alt=""
+            src="{{ url_for('static', filename='images/news/pic-blog-3.jpg') }}"
+            class="rounded-top"
+          />
+        </div>
+        <div class="px-30 pt-30 h-50">
+          <h4 class="mb-10">
+            <a class="fs-20 link-gray fw-bold" href="news-single.html"
+              >Holiday Tips For Backpacker<span></span
+            ></a>
+          </h4>
+          <p class="text-gray-40 mb-20">
+            Dolore officia sint incididunt non excepteur ea mollit commodo ut
+            enim reprehenderit cupidatat labore ad laborum consectetur.
+          </p>
+          <a class="btn btn-primary font-title fw-800 fs-14 px-4" href="#"
+            >Read More</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
