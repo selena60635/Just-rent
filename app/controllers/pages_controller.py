@@ -4,7 +4,7 @@ from flask import render_template
 @bp.route('/')
 @bp.route('/home')
 def home():
-    return render_template('index.html', title='Home')
+    return render_template('index.html', title='Home', slider_cars = True)
 
 @bp.route('/cars')
 def cars():
@@ -14,10 +14,13 @@ def cars():
 def cars_list():
     return render_template('cars-list.html', title='Cars List')
 
-# @bp.route('/cars/<int:id>')
-@bp.route('/cars/single')
-def cars_single():
-    return render_template('car-single.html', title='Cars Single',  car_id = 'car_id')
+@bp.route('/car/single')
+def car_single():
+    return render_template('car-single.html', title='Cars Single')
+
+@bp.route('/car/<int:id>')
+def car_single_id(id):
+    return render_template('car-single.html', title='Cars Single', id = id)
 
 @bp.route('/booking')
 def booking():
