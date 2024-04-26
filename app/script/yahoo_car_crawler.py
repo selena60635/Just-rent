@@ -27,18 +27,20 @@ def yahoo_car_crawler(url):
         'door': '車門數',
         'car_length': '車長',
         'wheelbase': '軸距',
-        'power_type': '動力型式',
-        'brand': '廠牌',
-        'model': '車款'
+        'power_type': '動力型式'
     }
-
-    info_dict = {}
 
     # 將網頁的標題添加到車輛資訊中，並只取 '|' 前的部分
     title = soup.find('title').text
     car_name = title.split('|')[0].strip()
-    info_dict['name'] = car_name
-    save_images(soup, car_name)
+    info_dict = {
+        'name': car_name.split()[0] + " " + " ".join(car_name.split()[2:]),
+        'brand': car_name.split()[0],
+        'model': " ".join(car_name.split()[2:]),
+        'year': int(car_name.split()[1]),
+        'price': 100  # 這裡不知道價錢要從何而來，先寫死做測試
+    }
+    save_images(soup, re.sub(r'\s+', '', car_name))
     for field_key, field in fields_dict.items():
 
         field_info = spec_wrapper.find('span', string=field)

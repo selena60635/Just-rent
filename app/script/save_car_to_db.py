@@ -35,6 +35,8 @@ for item in data:
         power_type=item['power_type'],
         brand=item['brand'],
         model=item['model'],
+        year=item['year'],
+        price=item['price'],
     )
     session.add(car_spec)
 

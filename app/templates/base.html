@@ -160,7 +160,7 @@
                         <li>
                           <a
                             class="menu-item"
-                            href="{{ url_for('controller.cars_single', car_id = car_id) }}"
+                            href="{{ url_for('controller.car_single', car_id = car_id) }}"
                             >Cars Single</a
                           >
                         </li>
@@ -352,5 +352,31 @@
     ></script>
 
     <script src="{{ url_for('static', filename='js/all.js') }}"></script>
+    {% if slider_cars %}
+    <script>
+      window.onload = () => {
+        sliderCars();
+      };
+    </script>
+    {% endif %} {% if id %}
+    <script>
+      window.onload = () => {
+        const carId = "{{ id }}";
+        displayCar(carId);
+      };
+    </script>
+    {% endif %} {% if display_cars %}
+    <script>
+      window.onload = () => {
+        displayCars();
+      };
+    </script>
+    {% endif %} {% if display_cars_list %}
+    <script>
+      window.onload = () => {
+        displayCarList();
+      };
+    </script>
+    {% endif %}
   </body>
 </html>
