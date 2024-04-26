@@ -8,11 +8,11 @@ def home():
 
 @bp.route('/cars')
 def cars():
-    return render_template('cars.html', title='Cars')
+    return render_template('cars.html', title='Cars', display_cars = True)
 
 @bp.route('/cars/list')
 def cars_list():
-    return render_template('cars-list.html', title='Cars List')
+    return render_template('cars-list.html', title='Cars List', display_cars_list = True)
 
 @bp.route('/car/single')
 def car_single():

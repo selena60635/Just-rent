@@ -365,6 +365,18 @@
         displayCar(carId);
       };
     </script>
+    {% endif %} {% if display_cars %}
+    <script>
+      window.onload = () => {
+        displayCars();
+      };
+    </script>
+    {% endif %} {% if display_cars_list %}
+    <script>
+      window.onload = () => {
+        displayCarList();
+      };
+    </script>
     {% endif %}
   </body>
 </html>
