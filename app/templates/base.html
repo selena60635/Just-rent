@@ -358,6 +358,13 @@
         sliderCars();
       };
     </script>
+    {% endif %} {% if id %}
+    <script>
+      window.onload = () => {
+        const carId = "{{ id }}";
+        displayCar(carId);
+      };
+    </script>
     {% endif %}
   </body>
 </html>

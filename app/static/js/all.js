@@ -61,3 +61,92 @@ function sliderCars() {
       console.error("Error fetching data:", error);
     });
 }
+
+function displayCar(id) {
+  fetch(`/api/car/${id}`)
+    .then((response) => response.json())
+    .then((car) => {
+      const imgSlider = document.getElementById("tiny-slider");
+      imgSlider.innerHTML = `<div class="my-slider"></div><div class="slider-thumb d-flex"></div>`;
+      const bigSlider = imgSlider.querySelector(".my-slider");
+      const thumbSlider = imgSlider.querySelector(".slider-thumb");
+
+      for (let i = 0; i < 4; i++) {
+        const item = document.createElement("div");
+        const img = document.createElement("img");
+        const fileName = `${car.brand}${car.year}${car.model.replace(
+          /\s/g,
+          ""
+        )}`;
+        img.src = `../static/cars-img/${fileName}/img_${i}.jpg`;
+        img.alt = `${fileName}-img${i}`;
+        item.appendChild(img);
+        bigSlider.appendChild(item);
+        const thumbItem = item.cloneNode(true);
+        thumbSlider.appendChild(thumbItem);
+      }
+      imgSlider.appendChild(bigSlider);
+      imgSlider.appendChild(thumbSlider);
+
+      const carPrice = document.getElementById("car-price");
+      const carSpec = document.getElementById("car-spec");
+      carPrice.innerHTML = `Daily rate<h3>${car.price}</h3>`;
+      carSpec.innerHTML = `
+        <h3>${car.brand} ${car.model}</h3>
+        <p></p>
+        <div class="spacer-10"></div>
+        <h4>Specifications</h4>
+        <div class="de-spec">
+          <div class="d-row">
+            <span class="d-title">Brand</span><span class="d-value">${car.brand}</span>
+          </div>
+          <div class="d-row">
+            <span class="d-title">Model</span><span class="d-value">${car.model}</span>
+          </div>
+          <div class="d-row">
+            <span class="d-title">Body</span><span class="d-value">${car.body}</span>
+          </div>
+          <div class="d-row">
+            <span class="d-title">Seat</span><span class="d-value">${car.seat} seats</span>
+          </div>
+          <div class="d-row">
+            <span class="d-title">Door</span><spam class="d-value">${car.door} doors</spam>
+          </div>
+          <div class="d-row">
+            <span class="d-title">Year</span><span class="d-value">${car.year}</span>
+          </div>
+          <div class="d-row">
+            <span class="d-title">Engine</span><span class="d-value">${car.displacement}</span>
+          </div>
+          <div class="d-row">
+            <span class="d-title">Power type</span><span class="d-value">${car.power_type}</span>
+          </div>
+          <div class="d-row">
+            <span class="d-title">Car Length</span><span class="d-value">${car.car_length}</span>
+          </div>
+          <div class="d-row">
+            <span class="d-title">Wheelbase</span><span class="d-value">${car.wheelbase}</span>
+          </div>
+        </div>
+        <div class="spacer-single"></div>
+        <h4>Features</h4>
+        <ul class="ul-style-2">
+        </ul>
+      `;
+
+      // 初始化 Tiny Slider
+      tns({
+        container: ".my-slider",
+        items: 1,
+        slideBy: "page",
+        navContainer: ".slider-thumb",
+        navPosition: "bottom",
+        controls: false,
+        navAsThumbnails: true,
+        speed: 600,
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
