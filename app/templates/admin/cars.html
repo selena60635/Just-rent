@@ -157,7 +157,10 @@
                           <a href="#">編輯</a>
                         </td>
                         <td>
-                          <a href="#">觀看</a>
+                          <a
+                            href="{{ url_for('controller.admin_get_car', id=car.id) }}"
+                            >觀看</a
+                          >
                         </td>
                       </tr>
                       {% endfor %}

@@ -16,3 +16,10 @@ def admin_cars():
     for row in result:
         cars.append(row)
     return render_template('admin/cars.html', cars=cars)
+
+@bp.route('/admin/car/<int:id>')
+def admin_get_car(id):
+    sql = text('SELECT * FROM cars WHERE id = :car_id')
+    result = db.session.execute(sql, {'car_id': id})
+    car = result.fetchone()
+    return render_template('admin/car.html', car=car)
