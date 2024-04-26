@@ -81,11 +81,17 @@
       <div class="sidebar-menu">
         <ul class="menu">
           <li class="sidebar-title">Menu</li>
-          <li class="sidebar-item active">
+          <li class="sidebar-item">
             <a
-              href="{{ url_for('controller.admin_cars') }}"
+              href="{{ url_for('controller.admin_index') }}"
               class="sidebar-link"
             >
+              <i class="bi bi-grid-fill"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="sidebar-item active">
+            <a href="#" class="sidebar-link">
               <i class="bi bi-grid-1x2-fill"></i>
               <span>Cars</span>
             </a>
@@ -116,23 +122,6 @@
     </header>
 
     <div class="page-heading">
-      <div class="page-title">
-        <div class="row">
-          <div class="col-12 col-md-6 order-md-2 order-first">
-            <nav
-              aria-label="breadcrumb"
-              class="breadcrumb-header float-start float-lg-end"
-            >
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                  <a href="index.html">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Cars</li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-      </div>
       <section class="section">
         <div class="row" id="table-head">
           <div class="col-12">
@@ -165,16 +154,10 @@
                         <td>{{ car.displacement }}cc</td>
                         <td>{{ car.brand }}</td>
                         <td>
-                          <a
-                            href="{{ url_for('controller.admin_edit_car', id=car.id) }}"
-                            >編輯</a
-                          >
+                          <a href="#">編輯</a>
                         </td>
                         <td>
-                          <a
-                            href="{{ url_for('controller.admin_get_car', id=car.id) }}"
-                            >觀看</a
-                          >
+                          <a href="#">觀看</a>
                         </td>
                       </tr>
                       {% endfor %}
