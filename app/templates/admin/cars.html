@@ -147,14 +147,17 @@
                     <tbody>
                       {% for car in cars %}
                       <tr>
-                        <td class="text-bold-500">{{ car.car_name }}</td>
+                        <td class="text-bold-500">{{ car.name }}</td>
                         <td>{{ car.seat }}人座</td>
                         <td class="text-bold-500">{{ car.door }}門</td>
                         <td>{{ car.body }}</td>
                         <td>{{ car.displacement }}cc</td>
                         <td>{{ car.brand }}</td>
                         <td>
-                          <a href="#">編輯</a>
+                          <a
+                            href="{{ url_for('controller.admin_edit_car', id=car.id) }}"
+                            >編輯</a
+                          >
                         </td>
                         <td>
                           <a

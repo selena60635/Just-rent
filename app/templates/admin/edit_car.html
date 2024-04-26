@@ -80,6 +80,15 @@
       <div class="sidebar-menu">
         <ul class="menu">
           <li class="sidebar-title">Menu</li>
+          <li class="sidebar-item">
+            <a
+              href="{{ url_for('controller.admin_index') }}"
+              class="sidebar-link"
+            >
+              <i class="bi bi-grid-fill"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
           <li class="sidebar-item active">
             <a
               href="{{ url_for('controller.admin_cars') }}"
@@ -88,6 +97,18 @@
               <i class="bi bi-grid-1x2-fill"></i>
               <span>Cars</span>
             </a>
+            <ul class="submenu submenu-open" style="--submenu-height: 215px">
+              <li class="submenu-item active">
+                <a
+                  href="{{ url_for('controller.admin_get_car', id=car.id) }}"
+                  class="submenu-link"
+                  >Car</a
+                >
+              </li>
+              <li class="submenu-item active">
+                <a href="#" class="submenu-link">Edit car</a>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>
@@ -115,25 +136,6 @@
     </header>
 
     <div class="page-heading">
-      <div class="page-title">
-        <div class="row">
-          <div class="col-12 col-md-6 order-md-2 order-first">
-            <nav
-              aria-label="breadcrumb"
-              class="breadcrumb-header float-start float-lg-end"
-            >
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                  <a href="index.html">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                  Table
-                </li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-      </div>
       <section id="basic-horizontal-layouts">
         <div class="row match-height">
           <div class="col-md-12 col-12">
@@ -152,8 +154,8 @@
                             class="form-control"
                             name="car-name"
                             id="car-mame"
-                            placeholder="{{ car.car_name }}"
-                            value="{{ car.car_name }}"
+                            placeholder="{{ car.name }}"
+                            value="{{ car.name }}"
                           />
                         </div>
                         <div class="col-md-4">
@@ -217,8 +219,34 @@
                             id="model"
                             class="form-control"
                             name="model"
-                            placeholder=""
+                            placeholder="{{ car.model }}"
                             value="{{ car.model }}"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="year">年份</label>
+                        </div>
+                        <div class="col-md-8 form-group">
+                          <input
+                            type="text"
+                            id="year"
+                            class="form-control"
+                            name="year"
+                            placeholder="{{ car.year }}"
+                            value="{{ car.year }}"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label for="price">價格</label>
+                        </div>
+                        <div class="col-md-8 form-group">
+                          <input
+                            type="text"
+                            id="price"
+                            class="form-control"
+                            name="price"
+                            placeholder="{{ car.price }}"
+                            value="{{ car.price }}"
                           />
                         </div>
                         <div class="col-md-4">
@@ -342,45 +370,3 @@
 </div>
 
 {% endblock %}
-<!-- <form class="form form-horizontal">
-  <div class="form-body">
-      <div class="row">
-          <div class="col-md-4">
-              <label for="first-name-horizontal">First Name</label>
-          </div>
-          <div class="col-md-8 form-group">
-              <input type="text" id="first-name-horizontal" class="form-control" name="fname" placeholder="First Name">
-          </div>
-          <div class="col-md-4">
-              <label for="email-horizontal">Email</label>
-          </div>
-          <div class="col-md-8 form-group">
-              <input type="email" id="email-horizontal" class="form-control" name="email-id" placeholder="Email">
-          </div>
-          <div class="col-md-4">
-              <label for="contact-info-horizontal">Mobile</label>
-          </div>
-          <div class="col-md-8 form-group">
-              <input type="number" id="contact-info-horizontal" class="form-control" name="contact" placeholder="Mobile">
-          </div>
-          <div class="col-md-4">
-              <label for="password-horizontal">Password</label>
-          </div>
-          <div class="col-md-8 form-group">
-              <input type="password" id="password-horizontal" class="form-control" name="password" placeholder="Password">
-          </div>
-          <div class="col-12 col-md-8 offset-md-4 form-group">
-              <div class="form-check">
-                  <div class="checkbox">
-                      <input type="checkbox" id="checkbox1" class="form-check-input" checked="">
-                      <label for="checkbox1">Remember Me</label>
-                  </div>
-              </div>
-          </div>
-          <div class="col-sm-12 d-flex justify-content-end">
-              <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
-              <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
-          </div>
-      </div>
-  </div>
-</form> -->

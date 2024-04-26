@@ -25,7 +25,7 @@ with open(os.path.join("app/script", "cars.json"), 'r') as f:
 # 將 JSON 數據轉換為 Car 物件並添加到 session
 for item in data:
     car_spec = Car(
-        car_name=item['name'], 
+        name=item['name'], 
         seat=item['seat'],
         door=item['door'],
         body=item['body'],
