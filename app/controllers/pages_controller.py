@@ -1,6 +1,6 @@
 from app.controllers import bp
 from flask import render_template, redirect, url_for, request, flash
-from flask_login import logout_user, current_user, login_user
+from flask_login import logout_user, current_user, login_user, login_required
 from app import db
 from app.models import User
 from urllib.parse import urlsplit
@@ -27,19 +27,23 @@ def car_single_id(id):
     return render_template('car-single.html', title='Cars Single', id = id)
 
 @bp.route('/booking')
+@login_required
 def booking():
     return render_template('booking.html', title='Booking')
 
 # user
 @bp.route('/profile')
+@login_required
 def profile():
     return render_template('account-profile.html', title='My Profile')
 
 @bp.route('/orders')
+@login_required
 def orders():
     return render_template('account-booking.html', title='My Orders')
 
 @bp.route('/favorite')
+@login_required
 def favorite():
     return render_template('account-favorite.html', title='My Favorite Cars')
 
