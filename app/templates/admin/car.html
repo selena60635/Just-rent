@@ -112,6 +112,15 @@
           </li>
           <li class="sidebar-item">
             <a
+              href="{{ url_for('controller.admin_users') }}"
+              class="sidebar-link"
+            >
+              <i class="bi bi-person-circle"></i>
+              <span>Users</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a
               href="{{ url_for('controller.admin_logout') }}"
               class="sidebar-link"
             >
@@ -155,14 +164,14 @@
                     <div class="form-body">
                       <div class="row">
                         <div class="col-md-4">
-                          <label for="first-name-horizontal">名稱</label>
+                          <label for="name">名稱</label>
                         </div>
                         <div class="col-md-8 form-group">
                           <input
                             type="text"
-                            id="first-name-horizontal"
+                            id="name"
                             class="form-control"
-                            name="fname"
+                            name="name"
                             placeholder="名稱"
                             value="{{ car.name }}"
                             readonly

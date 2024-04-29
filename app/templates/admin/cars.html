@@ -98,6 +98,15 @@
           </li>
           <li class="sidebar-item">
             <a
+              href="{{ url_for('controller.admin_users') }}"
+              class="sidebar-link"
+            >
+              <i class="bi bi-person-circle"></i>
+              <span>Users</span>
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a
               href="{{ url_for('controller.admin_logout') }}"
               class="sidebar-link"
             >

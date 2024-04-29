@@ -28,9 +28,22 @@ def super_admin_required(f):
             return redirect(url_for('login', next=request.url))
         if current_user.role != 'super_admin':
             flash('權限不足')
-            return redirect(url_for('controller.admin_cars'))
+            return redirect(url_for('controller.admin_users'))
         return f(*args, **kwargs)
     return decorated_function
+
+# def super_admin_required(redirect_route):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not current_user.is_authenticated:
+                return redirect(url_for('login', next=request.url))
+            if current_user.role != 'super_admin':
+                flash('權限不足')
+                return redirect(url_for(redirect_route))
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
 
 @bp.route('/admin')
 @admin_required
@@ -56,13 +69,14 @@ def admin_get_car(id):
     return render_template('admin/car.html', car=car)
 
 @bp.route('/admin/edit_car/<int:id>', methods=['GET', 'POST'])
-@super_admin_required
+# @super_admin_required('controller.admin_cars')
+@admin_required
 def admin_edit_car(id):
     sql = text('SELECT * FROM cars WHERE id = :car_id')
     result = db.session.execute(sql, {'car_id': id})
     car = result.fetchone()
     if request.method == 'POST':
-        carName = request.form.get('car-name')
+        name = request.form.get('name')
         seat = request.form.get('seat')
         door = request.form.get('door')
         body = request.form.get('body')
@@ -79,11 +93,11 @@ def admin_edit_car(id):
         wheelbase_raw =  re.search(r'\d+', request.form.get('wheelbase'))
         wheelbase = int(wheelbase_raw.group()) if wheelbase_raw else None
 
-        update_query = text("UPDATE cars SET car_name = :carName, seat = :seat, door = :door, body = :body, "
+        update_query = text("UPDATE cars SET name = :name, seat = :seat, door = :door, body = :body, "
                             "displacement = :displacement, car_length = :carLength, wheelbase = :wheelbase, "
                             "power_type = :powerType, brand = :brand, model = :model, year = :year, price = :price WHERE id = :car_id")
 
-        db.session.execute(update_query, {'carName': carName, 'seat': seat, 'door': door, 'body': body,
+        db.session.execute(update_query, {'name': name, 'seat': seat, 'door': door, 'body': body,
                                            'displacement': displacement, 'carLength': carLength,
                                            'wheelbase': wheelbase, 'powerType': powerType, 'brand': brand, 'model': model, 'year': year, 'price': price,
                                            'car_id': id})
@@ -99,3 +113,49 @@ def admin_edit_car(id):
 def admin_logout():
     logout_user()
     return redirect(url_for('controller.admin_index'))
+
+
+@bp.route('/admin/users')
+@admin_required
+def admin_users():
+    sql = text('SELECT * FROM users')
+    result = db.session.execute(sql)
+    users = []
+    for row in result:
+        users.append(row)
+    return render_template('admin/users.html', users=users)
+
+@bp.route('/admin/user/<int:id>')
+@admin_required
+def admin_get_user(id):
+    sql = text('SELECT * FROM users WHERE id = :user_id')
+    result = db.session.execute(sql, {'user_id': id})
+    user = result.fetchone()
+    return render_template('admin/user.html', user=user)
+
+@bp.route('/admin/edit_user/<int:id>', methods=['GET', 'POST'])
+# @super_admin_required('controller.admin_users')
+@super_admin_required
+def admin_edit_user(id):
+    sql = text('SELECT * FROM users WHERE id = :user_id')
+    result = db.session.execute(sql, {'user_id': id})
+    user = result.fetchone()
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        phone = request.form.get('phone') 
+        language = request.form.get('language')
+        hour_format = request.form.get('hour_format')
+        role = request.form.get('role')
+
+        update_query = text("UPDATE users SET username = :username, email = :email, phone = :phone, language = :language, "
+                            "hour_format = :hour_format, role = :role WHERE id = :user_id")
+
+        db.session.execute(update_query, {'username': username, 'email': email, 'phone': phone, 'language': language,
+                                           'hour_format': hour_format, 'role': role, 'user_id': id})
+        db.session.commit()
+        updated_result = db.session.execute(sql, {'user_id': id})
+        updated_user = updated_result.fetchone()
+
+        return render_template('admin/edit_user.html', user=updated_user)
+    return render_template('admin/edit_user.html', user=user)
