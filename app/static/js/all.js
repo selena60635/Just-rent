@@ -22,7 +22,7 @@ function sliderCars() {
         }${car.model.replace(/\s/g, "")}/img_0.jpg" alt="" />
         </div>
               <div class="card-info flex-grow-1 d-flex flex-column">
-                <h4>${car.car_name}</h4>
+                <h4>${car.name}</h4>
                 <div class="card-like">
                   <i class="fa fa-heart"></i><span>50</span>
                 </div>
@@ -172,11 +172,11 @@ function displayCars() {
             <div class="d-img">
               <img src="../static/cars-img/${car.brand}${
             car.year
-          }${car.model.replace(/\s/g, "")}/img_0.jpg" alt="${car.car_name}" />
+          }${car.model.replace(/\s/g, "")}/img_0.jpg" alt="${car.name}" />
             </div>
             <div class="d-info flex-grow-1 d-flex flex-column">
               <div class="d-text flex-grow-1 d-flex flex-column">
-                <h4 class="flex-grow-1">${car.car_name}</h4>
+                <h4 class="flex-grow-1">${car.name}</h4>
                 <div class="d-item_like">
                   <i class="fa fa-heart"></i><span>50</span>
                 </div>
@@ -225,12 +225,12 @@ function displayCarList() {
             <img src="../static/cars-img/${car.brand}${
             car.year
           }${car.model.replace(/\s/g, "")}/img_0.jpg" class="img-fluid" alt="${
-            car.car_name
+            car.name
           }" />
           </div>
           <div class="d-info">
             <div class="d-text">
-              <h4>${car.car_name}</h4>
+              <h4>${car.name}</h4>
               <div class="d-atr-group">
                 <ul class="d-atr">
                   <li><span>Type:</span>${car.body}</li>

@@ -1,14 +1,44 @@
 import re
 from app import db
 from app.controllers import bp
-from flask import render_template, request
+from app.models import User
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import current_user, logout_user
 from sqlalchemy import text
+from functools import wraps
+
+
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return redirect(url_for('controller.login'))
+        if current_user.role != 'super_admin' and current_user.role != 'admin':
+            print(current_user.role)
+            return redirect(url_for('controller.home'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def super_admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return redirect(url_for('login', next=request.url))
+        if current_user.role != 'super_admin':
+            flash('權限不足')
+            return redirect(url_for('controller.admin_cars'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 @bp.route('/admin')
+@admin_required
 def admin_index():
     return render_template('admin/index.html')
 
 @bp.route('/admin/cars')
+@admin_required
 def admin_cars():
     sql = text('SELECT * FROM cars')
     result = db.session.execute(sql)
@@ -18,6 +48,7 @@ def admin_cars():
     return render_template('admin/cars.html', cars=cars)
 
 @bp.route('/admin/car/<int:id>')
+@admin_required
 def admin_get_car(id):
     sql = text('SELECT * FROM cars WHERE id = :car_id')
     result = db.session.execute(sql, {'car_id': id})
@@ -25,6 +56,7 @@ def admin_get_car(id):
     return render_template('admin/car.html', car=car)
 
 @bp.route('/admin/edit_car/<int:id>', methods=['GET', 'POST'])
+@super_admin_required
 def admin_edit_car(id):
     sql = text('SELECT * FROM cars WHERE id = :car_id')
     result = db.session.execute(sql, {'car_id': id})
@@ -62,3 +94,8 @@ def admin_edit_car(id):
         return render_template('admin/edit_car.html', car=updated_car)
     return render_template('admin/edit_car.html', car=car)
 
+@bp.route('/admin/logout')
+@admin_required
+def admin_logout():
+    logout_user()
+    return redirect(url_for('controller.admin_index'))

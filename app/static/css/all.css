@@ -342,3 +342,7 @@ a {
   line-height: 1;
   letter-spacing: 5px;
 }
+.form-border input[type="text"]:focus,
+.form-border input[type="password"]:focus {
+  box-shadow: 0 0 0 3px rgba(30, 203, 21, 0.3);
+}
