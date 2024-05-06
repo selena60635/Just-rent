@@ -10,7 +10,7 @@ function sliderCars() {
       // 清空容器
       carContainer.innerHTML = "";
       carContainer.classList.add("my-slider");
-      data.forEach((car) => {
+      data.cars.forEach((car) => {
         const carItem = document.createElement("li");
         carItem.classList.add("d-flex", "flex-column");
         const carUrl = getCarUrl(car.id);
@@ -62,6 +62,215 @@ function sliderCars() {
     });
 }
 
+let currentPage = 1;
+let currentFilters = "";
+
+// filter
+function applyFilters() {
+  currentPage = 1;
+  let filters = [];
+
+  // body
+  const bodyFilters = [];
+  const bodyInputs = document.querySelectorAll(
+    "#car-body input[type=checkbox]"
+  );
+
+  bodyInputs.forEach((input) => {
+    if (input.checked) {
+      if (input.id === "other-bodies-filter") {
+        bodyFilters.push("other");
+      } else {
+        bodyFilters.push(input.value);
+      }
+    }
+  });
+
+  if (bodyFilters.length > 0) {
+    const bodyFiltersStr = bodyFilters.join(",");
+    filters.push(`&body=${bodyFiltersStr}`);
+  }
+
+  // seat
+  const seatFilters = [];
+  const seatInputs = document.querySelectorAll(
+    "#car-seat input[type=checkbox]"
+  );
+  seatInputs.forEach((input) => {
+    if (input.checked) {
+      seatFilters.push(input.value);
+    }
+  });
+  if (seatFilters.length > 0) {
+    const seatFilterStr = seatFilters.join(",");
+    filters.push(`&seat=${seatFilterStr}`);
+  }
+  console.log(bodyFilters);
+
+  // engine
+  const engineFilters = [];
+  const engineInputs = document.querySelectorAll(
+    "#car-displacement input[type=checkbox]"
+  );
+  engineInputs.forEach((input) => {
+    if (input.checked) {
+      engineFilters.push(input.value);
+    }
+  });
+
+  if (engineFilters.length > 0) {
+    const engineFilterStr = engineFilters.join(",");
+    filters.push(`&engine=${engineFilterStr}`);
+  }
+
+  // Price
+  const maxPrice = document.querySelector(".input-max").value;
+  filters.push(`&max_price=${maxPrice}`);
+  // 篩選條件發生變化時重新顯示汽車列表
+  currentFilters = filters.join(","); // 將當前的篩選條件保存
+  displayCars(currentPage, currentFilters);
+  displayCarList(currentPage, currentFilters);
+}
+
+// loading cars
+function displayCars(pageNumber, filterParams) {
+  let url;
+  if (filterParams) {
+    url = `/api/cars?page=${pageNumber}${filterParams}`;
+  } else {
+    url = `/api/cars?page=${pageNumber}`;
+  }
+
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      const carsMenu = document.getElementById("cars-menu");
+      if (carsMenu) {
+        carsMenu.innerHTML = "";
+
+        if (!data.has_next) {
+          document.getElementById("next-page-btn").disabled = true;
+        } else {
+          document.getElementById("next-page-btn").disabled = false;
+        }
+
+        console.log(data.cars.length);
+
+        data.cars.forEach((car) => {
+          const carItem = document.createElement("div");
+          carItem.classList.add(
+            "col-xl-4",
+            "col-lg-6",
+            "d-flex",
+            "flex-column"
+          );
+          const carUrl = getCarUrl(car.id);
+          carItem.innerHTML = `
+            <div class="de-item mb30 flex-grow-1 d-flex flex-column">
+              <div class="d-img">
+                <img src="../static/cars-img/${car.brand}${
+            car.year
+          }${car.model.replace(/\s/g, "")}/img_0.jpg" alt="${car.name}" />
+              </div>
+              <div class="d-info flex-grow-1 d-flex flex-column">
+                <div class="d-text flex-grow-1 d-flex flex-column">
+                  <h4 class="flex-grow-1">${car.name}</h4>
+                  <div class="d-item_like">
+                    <i class="fa fa-heart"></i><span>50</span>
+                  </div>
+                  <div class="d-atr-group">
+                    <span class="d-atr"><img src="../static/images/icons/1.svg" alt="" />${
+                      car.seat
+                    }</span>
+                    <span class="d-atr"><img src="../static/images/icons/3.svg" alt="" />${
+                      car.door
+                    }</span>
+                    <span class="d-atr"><img src="../static/images/icons/4.svg" alt="" />${
+                      car.body
+                    }</span>
+                  </div>
+                  <div class="d-price">
+                    Daily rate from <span>$${car.price}</span>
+                    <a class="btn-main" href="${carUrl}">Rent Now</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          carsMenu.appendChild(carItem);
+        });
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
+function displayCarList(pageNumber, filterParams) {
+  let url;
+  if (filterParams) {
+    url = `/api/cars?page=${pageNumber}${filterParams}`;
+  } else {
+    url = `/api/cars?page=${pageNumber}`;
+  }
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      const carsList = document.getElementById("cars-list");
+      if (carsList) {
+        carsList.innerHTML = "";
+        if (!data.has_next) {
+          document.getElementById("next-page-btn").disabled = true;
+        } else {
+          document.getElementById("next-page-btn").disabled = false;
+        }
+        data.cars.forEach((car) => {
+          const carItem = document.createElement("div");
+          carItem.classList.add("col-lg-12");
+          const carUrl = getCarUrl(car.id);
+          carItem.innerHTML = `
+              <div class="de-item-list mb30">
+              <div class="d-img">
+                <img src="../static/cars-img/${car.brand}${
+            car.year
+          }${car.model.replace(/\s/g, "")}/img_0.jpg" class="img-fluid" alt="${
+            car.name
+          }" />
+              </div>
+              <div class="d-info">
+                <div class="d-text">
+                  <h4>${car.name}</h4>
+                  <div class="d-atr-group">
+                    <ul class="d-atr">
+                      <li><span>Type:</span>${car.body}</li>
+                      <li><span>Seats:</span>${car.seat}</li>
+                      <li><span>Doors:</span>${car.door}</li>
+                      <li><span>Year:</span>${car.year}</li>
+                      <li><span>Fuel:</span>${car.power_type}</li>
+                      <li><span>Engine:</span>${car.displacement}</li>
+                      <li><span>Car length:</span>${car.car_length}</li>
+                      <li><span>Wheelbase:</span>${car.wheelbase}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="d-price">
+                Daily rate from <span>$${car.price}</span>
+                <a
+                  class="btn-main"
+                  href="${carUrl}"
+                  >Rent Now</a
+                >
+              </div>
+              <div class="clearfix"></div>
+            </div>`;
+          carsList.appendChild(carItem);
+        });
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
 function displayCar(id) {
   fetch(`/api/car/${id}`)
     .then((response) => response.json())
@@ -151,115 +360,19 @@ function displayCar(id) {
     });
 }
 
-function displayCars() {
-  fetch("/api/cars")
-    .then((response) => response.json())
-    .then((data) => {
-      const carsMenu = document.getElementById("cars-menu");
-      carsMenu.innerHTML = "";
-      data.forEach((car, index) => {
-        if (index < 12) {
-          const carItem = document.createElement("div");
-          carItem.classList.add(
-            "col-xl-4",
-            "col-lg-6",
-            "d-flex",
-            "flex-column"
-          );
-          const carUrl = getCarUrl(car.id);
-          carItem.innerHTML = `
-          <div class="de-item mb30 flex-grow-1 d-flex flex-column">
-            <div class="d-img">
-              <img src="../static/cars-img/${car.brand}${
-            car.year
-          }${car.model.replace(/\s/g, "")}/img_0.jpg" alt="${car.name}" />
-            </div>
-            <div class="d-info flex-grow-1 d-flex flex-column">
-              <div class="d-text flex-grow-1 d-flex flex-column">
-                <h4 class="flex-grow-1">${car.name}</h4>
-                <div class="d-item_like">
-                  <i class="fa fa-heart"></i><span>50</span>
-                </div>
-                <div class="d-atr-group">
-                <span class="d-atr"><img src="../static/images/icons/1.svg" alt="" />${
-                  car.seat
-                }</span>
-                <span class="d-atr"><img src="../static/images/icons/3.svg" alt="" />${
-                  car.door
-                }</span>
-                <span class="d-atr"><img src="../static/images/icons/4.svg" alt="" />${
-                  car.body
-                }</span>
-                </div>
-                <div class="d-price">
-                  Daily rate from <span>$${car.price}</span>
-                  <a class="btn-main" href="${carUrl}">Rent Now</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-          carsMenu.appendChild(carItem);
-        }
-      });
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
+// pagination
+document.getElementById("prev-page-btn").addEventListener("click", prevPage);
+document.getElementById("next-page-btn").addEventListener("click", nextPage);
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    displayCars(currentPage, currentFilters);
+    displayCarList(currentPage, currentFilters);
+  }
 }
 
-function displayCarList() {
-  fetch("/api/cars")
-    .then((response) => response.json())
-    .then((data) => {
-      const carsList = document.getElementById("cars-list");
-      carsList.innerHTML = "";
-      data.forEach((car, index) => {
-        if (index < 12) {
-          const carItem = document.createElement("div");
-          carItem.classList.add("col-lg-12");
-          const carUrl = getCarUrl(car.id);
-          carItem.innerHTML = `
-          <div class="de-item-list mb30">
-          <div class="d-img">
-            <img src="../static/cars-img/${car.brand}${
-            car.year
-          }${car.model.replace(/\s/g, "")}/img_0.jpg" class="img-fluid" alt="${
-            car.name
-          }" />
-          </div>
-          <div class="d-info">
-            <div class="d-text">
-              <h4>${car.name}</h4>
-              <div class="d-atr-group">
-                <ul class="d-atr">
-                  <li><span>Type:</span>${car.body}</li>
-                  <li><span>Seats:</span>${car.seat}</li>            
-                  <li><span>Doors:</span>${car.door}</li>
-                  <li><span>Year:</span>${car.year}</li>
-                  <li><span>Fuel:</span>${car.power_type}</li>
-                  <li><span>Engine:</span>${car.displacement}</li>
-                  <li><span>Car length:</span>${car.car_length}</li>
-                  <li><span>Wheelbase:</span>${car.wheelbase}</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="d-price">
-            Daily rate from <span>$${car.price}</span>
-            <a
-              class="btn-main"
-              href="${carUrl}"
-              >Rent Now</a
-            >
-          </div>
-          <div class="clearfix"></div>
-        </div>`;
-          carsList.appendChild(carItem);
-        }
-      });
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
+function nextPage() {
+  currentPage++;
+  displayCars(currentPage, currentFilters);
+  displayCarList(currentPage, currentFilters);
 }

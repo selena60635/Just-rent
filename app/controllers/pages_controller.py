@@ -70,6 +70,7 @@ def login():
                     next_page = url_for('controller.home')
                 else:
                     next_page = url_for('controller.admin_index')
+
             return redirect(next_page)
     return render_template('login.html')
 

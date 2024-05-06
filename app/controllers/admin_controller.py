@@ -32,18 +32,6 @@ def super_admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# def super_admin_required(redirect_route):
-    def decorator(f):
-        @wraps(f)
-        def decorated_function(*args, **kwargs):
-            if not current_user.is_authenticated:
-                return redirect(url_for('login', next=request.url))
-            if current_user.role != 'super_admin':
-                flash('權限不足')
-                return redirect(url_for(redirect_route))
-            return f(*args, **kwargs)
-        return decorated_function
-    return decorator
 
 @bp.route('/admin')
 @admin_required
@@ -69,7 +57,6 @@ def admin_get_car(id):
     return render_template('admin/car.html', car=car)
 
 @bp.route('/admin/edit_car/<int:id>', methods=['GET', 'POST'])
-# @super_admin_required('controller.admin_cars')
 @admin_required
 def admin_edit_car(id):
     sql = text('SELECT * FROM cars WHERE id = :car_id')
@@ -134,7 +121,6 @@ def admin_get_user(id):
     return render_template('admin/user.html', user=user)
 
 @bp.route('/admin/edit_user/<int:id>', methods=['GET', 'POST'])
-# @super_admin_required('controller.admin_users')
 @super_admin_required
 def admin_edit_user(id):
     sql = text('SELECT * FROM users WHERE id = :user_id')
@@ -159,3 +145,4 @@ def admin_edit_user(id):
 
         return render_template('admin/edit_user.html', user=updated_user)
     return render_template('admin/edit_user.html', user=user)
+

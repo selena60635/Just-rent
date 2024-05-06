@@ -369,22 +369,22 @@
     </script>
     {% endif %} {% if id %}
     <script>
-      window.onload = () => {
+      document.addEventListener("DOMContentLoaded", function () {
         const carId = "{{ id }}";
         displayCar(carId);
-      };
+      });
     </script>
     {% endif %} {% if display_cars %}
     <script>
-      window.onload = () => {
-        displayCars();
-      };
+      document.addEventListener("DOMContentLoaded", function () {
+        displayCars(1);
+      });
     </script>
     {% endif %} {% if display_cars_list %}
     <script>
-      window.onload = () => {
-        displayCarList();
-      };
+      document.addEventListener("DOMContentLoaded", function () {
+        displayCarList(1);
+      });
     </script>
     {% endif %}
   </body>
