@@ -152,6 +152,23 @@
             {% endif %} {% endwith %}
             <div class="card">
               <div class="card-header">
+                <h4 class="card-title">上傳汽車圖片</h4>
+              </div>
+              <div class="card-content p-4 pt-0">
+                <form
+                  action="/api/upload"
+                  method="post"
+                  id="uploadForm"
+                  enctype="multipart/form-data"
+                >
+                  <input type="file" name="file" accept=".jpg, .png, .jpeg" />
+                  <button type="button" onclick="uploadImage()">上傳</button>
+                </form>
+                <div id="imageUrl"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
                 <h4 class="card-title">汽車列表</h4>
               </div>
               <div class="card-content">
@@ -195,15 +212,6 @@
                     </tbody>
                   </table>
                 </div>
-                <h1>Upload File to S3</h1>
-                <form
-                  action="/upload"
-                  method="post"
-                  enctype="multipart/form-data"
-                >
-                  <input type="file" name="file" accept=".jpg, .png, .jpeg" />
-                  <button type="submit">Upload</button>
-                </form>
               </div>
             </div>
           </div>

@@ -2,11 +2,11 @@ import re
 from app import db
 from app.controllers import bp
 from app.models import User
-from flask import render_template, request, redirect, url_for, flash
+from flask import jsonify, render_template, request, redirect, url_for, flash
 from flask_login import current_user, logout_user
 from sqlalchemy import text
 from functools import wraps
-
+import boto3
 
 
 
@@ -38,7 +38,7 @@ def super_admin_required(f):
 def admin_index():
     return render_template('admin/index.html')
 
-@bp.route('/admin/cars')
+@bp.route('/admin/cars', methods=['GET', 'POST'])
 @admin_required
 def admin_cars():
     sql = text('SELECT * FROM cars')
@@ -145,4 +145,5 @@ def admin_edit_user(id):
 
         return render_template('admin/edit_user.html', user=updated_user)
     return render_template('admin/edit_user.html', user=user)
+
 

@@ -361,8 +361,6 @@ function displayCar(id) {
 }
 
 // pagination
-document.getElementById("prev-page-btn").addEventListener("click", prevPage);
-document.getElementById("next-page-btn").addEventListener("click", nextPage);
 function prevPage() {
   if (currentPage > 1) {
     currentPage--;
@@ -375,4 +373,21 @@ function nextPage() {
   currentPage++;
   displayCars(currentPage, currentFilters);
   displayCarList(currentPage, currentFilters);
+}
+// 上傳圖片
+async function uploadImage() {
+  try {
+    const formData = new FormData(document.getElementById("uploadForm"));
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    const imageUrl = data.url;
+    document.getElementById(
+      "imageUrl"
+    ).innerHTML = `<a href="${imageUrl}" target="_blank">${imageUrl}</a>`;
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }

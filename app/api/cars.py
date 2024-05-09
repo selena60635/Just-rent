@@ -1,9 +1,7 @@
 from app import db
 from app.api import bp
-from flask import jsonify, current_app, url_for
+from flask import jsonify, current_app, request
 from sqlalchemy import and_, or_, text
-from flask import request
-
 from app.models.car import Car
 
 @bp.route('/api/cars', methods=['GET'])

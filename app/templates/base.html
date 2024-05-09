@@ -378,12 +378,24 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         displayCars(1);
+        document
+          .getElementById("prev-page-btn")
+          .addEventListener("click", prevPage);
+        document
+          .getElementById("next-page-btn")
+          .addEventListener("click", nextPage);
       });
     </script>
     {% endif %} {% if display_cars_list %}
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         displayCarList(1);
+        document
+          .getElementById("prev-page-btn")
+          .addEventListener("click", prevPage);
+        document
+          .getElementById("next-page-btn")
+          .addEventListener("click", nextPage);
       });
     </script>
     {% endif %}
