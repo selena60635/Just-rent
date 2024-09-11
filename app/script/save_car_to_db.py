@@ -2,7 +2,7 @@ import json, os
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 import sys
-sys.path.append('/mnt/c/媜/code/饅頭計畫/just-rent')
+sys.path.append('/mnt/d/媜/code/饅頭計畫/just-rent')
 
 from app.models import Car
 from config import Config

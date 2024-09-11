@@ -154,8 +154,6 @@ function displayCars(pageNumber, filterParams) {
           document.getElementById("next-page-btn").disabled = false;
         }
 
-        console.log(data.cars.length);
-
         data.cars.forEach((car) => {
           const carItem = document.createElement("div");
           carItem.classList.add(

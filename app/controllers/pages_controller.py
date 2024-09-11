@@ -79,9 +79,32 @@ def logout():
     logout_user()
     return render_template('index.html')
 
-@bp.route('/register')
+@bp.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html', title='Register')
+    if current_user.is_authenticated:
+        return redirect(url_for('controller.home'))
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        re_password = request.form.get('re-password')
+        if not all([username, email, password,  re_password]):
+            flash('表單不得為空')
+        elif User.query.filter_by(username=username).first():
+            flash('此名稱已被使用')
+        elif User.query.filter_by(email=email).first():
+            flash('此信箱已被使用')
+        elif password != re_password:
+            flash('密碼不相符')
+        else:
+            new_user = User(username=username, email=email)
+            new_user.set_password(password)
+            db.session.add(new_user)
+            db.session.commit()
+            flash('註冊成功！請登入')
+            return redirect(url_for('controller.login'))
+
+    return render_template('register.html')
 
 
 @bp.route('/error')
