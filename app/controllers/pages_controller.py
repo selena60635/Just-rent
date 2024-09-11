@@ -1,10 +1,14 @@
 from app.controllers import bp
-from flask import render_template
+from flask import render_template, redirect, url_for, request, flash
+from flask_login import logout_user, current_user, login_user, login_required
+from app import db
+from app.models import User
+from urllib.parse import urlsplit
 
 @bp.route('/')
 @bp.route('/home')
 def home():
-    return render_template('index.html', title='Home', slider_cars = True)
+    return render_template('index.html', slider_cars = True)
 
 @bp.route('/cars')
 def cars():
@@ -23,26 +27,57 @@ def car_single_id(id):
     return render_template('car-single.html', title='Cars Single', id = id)
 
 @bp.route('/booking')
+@login_required
 def booking():
     return render_template('booking.html', title='Booking')
 
 # user
 @bp.route('/profile')
+@login_required
 def profile():
     return render_template('account-profile.html', title='My Profile')
 
 @bp.route('/orders')
+@login_required
 def orders():
     return render_template('account-booking.html', title='My Orders')
 
 @bp.route('/favorite')
+@login_required
 def favorite():
     return render_template('account-favorite.html', title='My Favorite Cars')
 
 
-@bp.route('/login')
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html', title='Login')
+    if current_user.is_authenticated:
+        return redirect(url_for('controller.home'))
+    
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        remember = request.form.get('remember_me')
+
+        user = db.session.scalar(db.select(User).from_statement(db.text(f"SELECT * FROM users WHERE username='{username}'")))
+        if user is None or not user.check_password(password):
+            flash('無效的使用者名稱或密碼')
+        else:
+            login_user(user, remember = remember)
+            next_page = request.args.get('next')
+            if not next_page or urlsplit(next_page).netloc != '':
+                # 檢查角色
+                if user.role == 'basic':
+                    next_page = url_for('controller.home')
+                else:
+                    next_page = url_for('controller.admin_index')
+
+            return redirect(next_page)
+    return render_template('login.html')
+
+@bp.route('/logout')
+def logout():
+    logout_user()
+    return render_template('index.html')
 
 @bp.route('/register')
 def register():

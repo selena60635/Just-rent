@@ -2,7 +2,7 @@ import json, os
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 import sys
-sys.path.append('/mnt/c/媜/code/饅頭計畫/m3-week-10-selena60635/just-rent')
+sys.path.append('/mnt/c/媜/code/饅頭計畫/just-rent')
 
 from app.models import Car
 from config import Config
@@ -25,7 +25,7 @@ with open(os.path.join("app/script", "cars.json"), 'r') as f:
 # 將 JSON 數據轉換為 Car 物件並添加到 session
 for item in data:
     car_spec = Car(
-        car_name=item['name'], 
+        name=item['name'], 
         seat=item['seat'],
         door=item['door'],
         body=item['body'],

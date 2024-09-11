@@ -25,164 +25,84 @@
       <div class="row">
         <div class="col-lg-3">
           <div class="item_filter_group">
-            <h4>Vehicle Type</h4>
-            <div class="de_form">
-              <div class="de_checkbox">
-                <input
-                  id="vehicle_type_1"
-                  name="vehicle_type_1"
-                  type="checkbox"
-                  value="vehicle_type_1"
-                />
-                <label for="vehicle_type_1">Car</label>
-              </div>
-
-              <div class="de_checkbox">
-                <input
-                  id="vehicle_type_2"
-                  name="vehicle_type_2"
-                  type="checkbox"
-                  value="vehicle_type_2"
-                />
-                <label for="vehicle_type_2">Van</label>
-              </div>
-
-              <div class="de_checkbox">
-                <input
-                  id="vehicle_type_3"
-                  name="vehicle_type_3"
-                  type="checkbox"
-                  value="vehicle_type_3"
-                />
-                <label for="vehicle_type_3">Minibus</label>
-              </div>
-
-              <div class="de_checkbox">
-                <input
-                  id="vehicle_type_4"
-                  name="vehicle_type_4"
-                  type="checkbox"
-                  value="vehicle_type_4"
-                />
-                <label for="vehicle_type_4">Prestige</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="item_filter_group">
             <h4>Car Body Type</h4>
-            <div class="de_form">
+            <div class="de_form" id="car-body">
               <div class="de_checkbox">
                 <input
-                  id="car_body_type_1"
-                  name="car_body_type_1"
+                  id="suv-filter"
+                  name="suv-filter"
                   type="checkbox"
-                  value="car_body_type_1"
+                  value="運動休旅車"
+                  onchange="applyFilters()"
                 />
-                <label for="car_body_type_1">Convertible</label>
+                <label for="suv-filter">運動休旅車</label>
               </div>
 
               <div class="de_checkbox">
                 <input
-                  id="car_body_type_2"
-                  name="car_body_type_2"
+                  id="car-filter"
+                  name="car-filter"
                   type="checkbox"
-                  value="car_body_type_2"
+                  value="轎車"
+                  onchange="applyFilters()"
                 />
-                <label for="car_body_type_2">Coupe</label>
+                <label for="car-filter">轎車</label>
               </div>
 
               <div class="de_checkbox">
                 <input
-                  id="car_body_type_3"
-                  name="car_body_type_3"
+                  id="coupe-filter"
+                  name="coupe-filter"
                   type="checkbox"
-                  value="car_body_type_3"
+                  value="雙門轎跑車"
+                  onchange="applyFilters()"
                 />
-                <label for="car_body_type_3">Exotic Cars</label>
+                <label for="coupe-filter">雙門轎跑車</label>
               </div>
 
               <div class="de_checkbox">
                 <input
-                  id="car_body_type_4"
-                  name="car_body_type_4"
+                  id="hatchback-filter"
+                  name="hatchback-filter"
                   type="checkbox"
-                  value="car_body_type_4"
+                  value="掀背車"
+                  onchange="applyFilters()"
                 />
-                <label for="car_body_type_4">Hatchback</label>
+                <label for="hatchback-filter">掀背車</label>
               </div>
-
               <div class="de_checkbox">
                 <input
-                  id="car_body_type_5"
-                  name="car_body_type_5"
+                  id="rv-filter"
+                  name="rv-filter"
                   type="checkbox"
-                  value="car_body_type_5"
+                  value="休旅車"
+                  onchange="applyFilters()"
                 />
-                <label for="car_body_type_5">Minivan</label>
+                <label for="rv-filter">休旅車</label>
               </div>
-
               <div class="de_checkbox">
                 <input
-                  id="car_body_type_6"
-                  name="car_body_type_6"
+                  id="other-bodies-filter"
+                  name="other-bodies-filter"
                   type="checkbox"
-                  value="car_body_type_6"
+                  value="其它"
+                  onchange="applyFilters()"
                 />
-                <label for="car_body_type_6">Pickup Truck</label>
-              </div>
-
-              <div class="de_checkbox">
-                <input
-                  id="car_body_type_7"
-                  name="car_body_type_7"
-                  type="checkbox"
-                  value="car_body_type_7"
-                />
-                <label for="car_body_type_7">Sedan</label>
-              </div>
-
-              <div class="de_checkbox">
-                <input
-                  id="car_body_type_8"
-                  name="car_body_type_8"
-                  type="checkbox"
-                  value="car_body_type_8"
-                />
-                <label for="car_body_type_8">Sports Car</label>
-              </div>
-
-              <div class="de_checkbox">
-                <input
-                  id="car_body_type_9"
-                  name="car_body_type_9"
-                  type="checkbox"
-                  value="car_body_type_9"
-                />
-                <label for="car_body_type_9">Station Wagon</label>
-              </div>
-
-              <div class="de_checkbox">
-                <input
-                  id="car_body_type_10"
-                  name="car_body_type_10"
-                  type="checkbox"
-                  value="car_body_type_10"
-                />
-                <label for="car_body_type_10">SUV</label>
+                <label for="other-bodies-filter">其它</label>
               </div>
             </div>
           </div>
 
           <div class="item_filter_group">
             <h4>Car Seats</h4>
-            <div class="de_form">
+            <div class="de_form" id="car-seat">
               <div class="de_checkbox">
                 <input
                   id="car_seat_1"
                   name="car_seat_1"
                   type="checkbox"
-                  value="car_seat_1"
+                  value="2"
+                  onchange="applyFilters()"
                 />
                 <label for="car_seat_1">2 seats</label>
               </div>
@@ -192,7 +112,8 @@
                   id="car_seat_2"
                   name="car_seat_2"
                   type="checkbox"
-                  value="car_seat_2"
+                  value="4"
+                  onchange="applyFilters()"
                 />
                 <label for="car_seat_2">4 seats</label>
               </div>
@@ -202,9 +123,10 @@
                   id="car_seat_3"
                   name="car_seat_3"
                   type="checkbox"
-                  value="car_seat_3"
+                  value="5"
+                  onchange="applyFilters()"
                 />
-                <label for="car_seat_3">6 seats</label>
+                <label for="car_seat_3">5 seats</label>
               </div>
 
               <div class="de_checkbox">
@@ -212,22 +134,24 @@
                   id="car_seat_4"
                   name="car_seat_4"
                   type="checkbox"
-                  value="car_seat_4"
+                  value="5plus"
+                  onchange="applyFilters()"
                 />
-                <label for="car_seat_4">6+ seats</label>
+                <label for="car_seat_4">5+ seats</label>
               </div>
             </div>
           </div>
 
           <div class="item_filter_group">
             <h4>Car Engine Capacity (cc)</h4>
-            <div class="de_form">
+            <div class="de_form" id="car-displacement">
               <div class="de_checkbox">
                 <input
                   id="car_engine_1"
                   name="car_engine_1"
                   type="checkbox"
-                  value="car_engine_1"
+                  value="1000~2000"
+                  onchange="applyFilters()"
                 />
                 <label for="car_engine_1">1000 - 2000</label>
               </div>
@@ -237,7 +161,8 @@
                   id="car_engine_2"
                   name="car_engine_2"
                   type="checkbox"
-                  value="car_engine_2"
+                  value="2000~4000"
+                  onchange="applyFilters()"
                 />
                 <label for="car_engine_2">2000 - 4000</label>
               </div>
@@ -247,7 +172,8 @@
                   id="car_engine_3"
                   name="car_engine_3"
                   type="checkbox"
-                  value="car_engine_3"
+                  value="4000~6000"
+                  onchange="applyFilters()"
                 />
                 <label for="car_engine_3">4000 - 6000</label>
               </div>
@@ -257,7 +183,8 @@
                   id="car_engine_4"
                   name="car_engine_4"
                   type="checkbox"
-                  value="car_engine_4"
+                  value="6000plus"
+                  onchange="applyFilters()"
                 />
                 <label for="car_engine_4">6000+</label>
               </div>
@@ -269,11 +196,21 @@
             <div class="price-input">
               <div class="field">
                 <span>Min</span>
-                <input type="number" class="input-min" value="0" />
+                <input
+                  type="number"
+                  class="input-min"
+                  value="0"
+                  onchange="applyFilters()"
+                />
               </div>
               <div class="field">
                 <span>Max</span>
-                <input type="number" class="input-max" value="2000" />
+                <input
+                  type="number"
+                  class="input-max"
+                  value="2000"
+                  onchange="applyFilters()"
+                />
               </div>
             </div>
             <div class="slider">
@@ -287,6 +224,7 @@
                 max="2000"
                 value="0"
                 step="1"
+                onchange="applyFilters()"
               />
               <input
                 type="range"
@@ -295,6 +233,7 @@
                 max="2000"
                 value="2000"
                 step="1"
+                onchange="applyFilters()"
               />
             </div>
           </div>
@@ -950,6 +889,9 @@
               </div>
             </div>
           </div>
+
+          <button id="prev-page-btn">上一頁</button>
+          <button id="next-page-btn">下一頁</button>
         </div>
       </div>
     </div>

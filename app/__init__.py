@@ -1,10 +1,13 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
+login = LoginManager()
+login.login_view = 'controller.login'
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -12,7 +15,8 @@ def create_app(config_class=Config):
     
     db.init_app(app)
     migrate.init_app(app, db)
-
+    login.init_app(app)
+    
     from app.controllers import bp as controllers_bp
     app.register_blueprint(controllers_bp)
 

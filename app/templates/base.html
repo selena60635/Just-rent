@@ -174,7 +174,9 @@
                       >
                     </li>
                     <li>
-                      <a class="menu-item" href="account-dashboard.html"
+                      <a
+                        class="menu-item"
+                        href="{{ url_for('controller.admin_index') }}"
                         >My Account</a
                       >
                       <ul>
@@ -232,9 +234,17 @@
                 </div>
                 <div class="de-flex-col">
                   <div class="menu_side_area">
+                    {% if current_user.is_anonymous %}
                     <a href="{{ url_for('controller.login') }}" class="btn-main"
                       >Sign In</a
                     >
+                    {% else %}
+                    <a
+                      href="{{ url_for('controller.logout') }}"
+                      class="btn-main"
+                      >Sign Out</a
+                    >
+                    {% endif %}
                     <span id="menu-btn"></span>
                   </div>
                 </div>
@@ -342,7 +352,6 @@
       <!-- footer close -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/tiny-slider@2.9.3/dist/min/tiny-slider.js"></script>
-    <!-- <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script> -->
     <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
     <script src="{{ url_for('static', filename='js/designesia.js') }}"></script>
     <script
@@ -360,22 +369,34 @@
     </script>
     {% endif %} {% if id %}
     <script>
-      window.onload = () => {
+      document.addEventListener("DOMContentLoaded", function () {
         const carId = "{{ id }}";
         displayCar(carId);
-      };
+      });
     </script>
     {% endif %} {% if display_cars %}
     <script>
-      window.onload = () => {
-        displayCars();
-      };
+      document.addEventListener("DOMContentLoaded", function () {
+        displayCars(1);
+        document
+          .getElementById("prev-page-btn")
+          .addEventListener("click", prevPage);
+        document
+          .getElementById("next-page-btn")
+          .addEventListener("click", nextPage);
+      });
     </script>
     {% endif %} {% if display_cars_list %}
     <script>
-      window.onload = () => {
-        displayCarList();
-      };
+      document.addEventListener("DOMContentLoaded", function () {
+        displayCarList(1);
+        document
+          .getElementById("prev-page-btn")
+          .addEventListener("click", prevPage);
+        document
+          .getElementById("next-page-btn")
+          .addEventListener("click", nextPage);
+      });
     </script>
     {% endif %}
   </body>
