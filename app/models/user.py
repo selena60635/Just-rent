@@ -2,6 +2,13 @@ from app import db, login
 import sqlalchemy.orm as so
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+# from app.models.car import Car
+
+likes = db.Table('likes',
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
+    db.Column('car_id', db.Integer, db.ForeignKey('cars.id'), primary_key=True),
+)
+
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -13,6 +20,8 @@ class User(UserMixin, db.Model):
     language = db.Column(db.String(255), nullable=False, default='English')
     hour_format = db.Column(db.String(255), nullable=False, default='24-hour')
     role = db.Column(db.String(255), nullable=False, default='basic')
+
+    liked_cars = db.relationship('Car', secondary=likes,backref=db.backref('liked_by', lazy='dynamic'))
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

@@ -350,7 +350,6 @@
           </div>
         </div>
       </footer>
-      <!-- footer close -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/tiny-slider@2.9.3/dist/min/tiny-slider.js"></script>
     <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
@@ -364,9 +363,9 @@
     <script src="{{ url_for('static', filename='js/all.js') }}"></script>
     {% if slider_cars %}
     <script>
-      window.onload = () => {
+      document.addEventListener("DOMContentLoaded", function () {
         sliderCars();
-      };
+      });
     </script>
     {% endif %} {% if id %}
     <script>
@@ -380,22 +379,34 @@
       document.addEventListener("DOMContentLoaded", function () {
         displayCars(1);
         document
-          .getElementById("prev-page-btn")
+          .querySelector(".prev-cars")
           .addEventListener("click", prevPage);
         document
-          .getElementById("next-page-btn")
+          .querySelector(".next-cars")
           .addEventListener("click", nextPage);
       });
     </script>
-    {% endif %} {% if display_cars_list %}
+    {% endif %}{% if display_cars_list %}
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         displayCarList(1);
         document
-          .getElementById("prev-page-btn")
+          .querySelector(".prev-cars-list")
           .addEventListener("click", prevPage);
         document
-          .getElementById("next-page-btn")
+          .querySelector(".next-cars-list")
+          .addEventListener("click", nextPage);
+      });
+    </script>
+    {% endif %} {% if favorite_cars %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        favoriteCars(1);
+        document
+          .querySelector(".prev-favorites")
+          .addEventListener("click", prevPage);
+        document
+          .querySelector(".next-favorites")
           .addEventListener("click", nextPage);
       });
     </script>

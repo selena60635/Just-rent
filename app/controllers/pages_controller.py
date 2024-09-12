@@ -45,7 +45,7 @@ def orders():
 @bp.route('/favorite')
 @login_required
 def favorite():
-    return render_template('account-favorite.html', title='My Favorite Cars')
+    return render_template('account-favorite.html', title='My Favorite Cars', favorite_cars = True)
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -77,7 +77,7 @@ def login():
 @bp.route('/logout')
 def logout():
     logout_user()
-    return render_template('index.html')
+    return render_template('index.html', slider_cars = True)
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():

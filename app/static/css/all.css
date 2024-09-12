@@ -347,3 +347,7 @@ a {
 .form-border input[type="email"]:focus {
   box-shadow: 0 0 0 3px rgba(30, 203, 21, 0.3);
 }
+.de-item .d-item_like i.liked,
+i.liked {
+  color: #ff2d2d;
+}

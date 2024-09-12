@@ -1,7 +1,7 @@
 from app import db
-from app.models.user import User
 import sqlalchemy.orm as so
 from datetime import datetime, timezone
+
 
 class Car(db.Model):
     __tablename__ = 'cars'
@@ -22,5 +22,5 @@ class Car(db.Model):
     available_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
     last_return_time = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
-    like_users = db.Column(db.Integer, db.ForeignKey('users.id'))
+
     

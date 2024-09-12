@@ -12151,7 +12151,7 @@ input[type="range"]::-moz-range-thumb {
 
 .de-item .d-item_like i {
   color: #cccccc;
-  margin-right: 6px;
+  /* margin-right: 6px; */
 }
 
 .rtl .de-item .d-item_like i {
