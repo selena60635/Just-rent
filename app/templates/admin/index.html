@@ -1,4 +1,5 @@
 {% extends "admin/base.html" %} {% block content %}
+
 <div id="app">
   <div id="sidebar" class="active sidebar-desktop">
     <div class="sidebar-wrapper active ps ps--active-y">
@@ -80,15 +81,10 @@
       <div class="sidebar-menu">
         <ul class="menu">
           <li class="sidebar-title">Menu</li>
+
           <li class="sidebar-item active">
-            <a href="#" class="sidebar-link">
-              <i class="bi bi-grid-fill"></i>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li class="sidebar-item">
             <a
-              href="{{ url_for('controller.admin_cars') }}"
+              href="{{ url_for('controller.admin_index') }}"
               class="sidebar-link"
             >
               <i class="bi bi-grid-1x2-fill"></i>
@@ -100,7 +96,7 @@
               href="{{ url_for('controller.admin_users') }}"
               class="sidebar-link"
             >
-              <i class="bi bi-grid-1x2-fill"></i>
+              <i class="bi bi-person-circle"></i>
               <span>Users</span>
             </a>
           </li>
@@ -137,11 +133,34 @@
         <i class="bi bi-justify fs-3"></i>
       </a>
     </header>
-
     <div class="page-heading">
       <section class="section">
         <div class="row" id="table-head">
           <div class="col-12">
+            {% with messages = get_flashed_messages() %} {% if messages %}
+            <div>
+              {% for message in messages %}
+              <p>{{ message }}</p>
+              {% endfor %}
+            </div>
+            {% endif %} {% endwith %}
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">上傳汽車圖片</h4>
+              </div>
+              <div class="card-content p-4 pt-0">
+                <form
+                  action="/api/upload"
+                  method="post"
+                  id="uploadForm"
+                  enctype="multipart/form-data"
+                >
+                  <input type="file" name="file" accept=".jpg, .png, .jpeg" />
+                  <button type="button" onclick="uploadImage()">上傳</button>
+                </form>
+                <div id="imageUrl"></div>
+              </div>
+            </div>
             <div class="card">
               <div class="card-header">
                 <h4 class="card-title">汽車列表</h4>
@@ -161,7 +180,30 @@
                         <th>觀看</th>
                       </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                      {% for car in cars %}
+                      <tr>
+                        <td class="text-bold-500">{{ car.name }}</td>
+                        <td>{{ car.seat }}人座</td>
+                        <td class="text-bold-500">{{ car.door }}門</td>
+                        <td>{{ car.body }}</td>
+                        <td>{{ car.displacement }}cc</td>
+                        <td>{{ car.brand }}</td>
+                        <td>
+                          <a
+                            href="{{ url_for('controller.admin_edit_car', id=car.id) }}"
+                            >編輯</a
+                          >
+                        </td>
+                        <td>
+                          <a
+                            href="{{ url_for('controller.admin_get_car', id=car.id) }}"
+                            >觀看</a
+                          >
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
                   </table>
                 </div>
               </div>

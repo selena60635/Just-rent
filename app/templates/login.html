@@ -64,11 +64,8 @@
 
   <body>
     <div id="wrapper">
-      <!-- page preloader begin -->
       <div id="de-preloader"></div>
-      <!-- page preloader close -->
 
-      <!-- header begin -->
       <header class="transparent header-light scroll-light has-topbar">
         <div id="topbar" class="topbar-dark text-light">
           <div class="container">
@@ -244,8 +241,7 @@
           </div>
         </div>
       </header>
-      <!-- header close -->
-      <!-- content begin -->
+
       <div class="no-bottom no-top" id="content">
         <div id="top"></div>
         <section id="section-hero" aria-label="section" class="jarallax">
@@ -265,10 +261,11 @@
                     <h4>Login</h4>
                     <div class="spacer-10"></div>
                     <form
-                      id="form_register"
+                      id="form-login"
+                      name="form-login"
                       class="form-border"
                       method="post"
-                      action=""
+                      action="{{ url_for('controller.login')}}"
                     >
                       <div class="field-set">
                         <input
@@ -276,6 +273,7 @@
                           name="username"
                           id="username"
                           class="form-control"
+                          value="demo"
                           placeholder="Your Name"
                         />
                       </div>
@@ -285,6 +283,7 @@
                           name="password"
                           id="password"
                           class="form-control"
+                          value="000000"
                           placeholder="Your password"
                         />
                       </div>
@@ -331,10 +330,8 @@
           </div>
         </section>
       </div>
-      <!-- content close -->
     </div>
-    <!-- Javascript Files
-    ================================================== -->
+
     <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
     <script src="{{ url_for('static', filename='js/designesia.js') }}"></script>
   </body>

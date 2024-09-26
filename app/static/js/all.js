@@ -1,7 +1,3 @@
-function getCarUrl(id) {
-  const baseUrl = window.location.origin;
-  return `${baseUrl}/car/${id}`;
-}
 function sliderCars() {
   fetch("/api/cars")
     .then((response) => response.json())
@@ -13,7 +9,7 @@ function sliderCars() {
       data.cars.forEach((car) => {
         const carItem = document.createElement("li");
         carItem.classList.add("d-flex", "flex-column");
-        const carUrl = getCarUrl(car.id);
+
         carItem.innerHTML = `
           <div class="card flex-grow-1 d-flex flex-column">
           <div class="card-img">
@@ -24,7 +20,11 @@ function sliderCars() {
               <div class="card-info flex-grow-1 d-flex flex-column">
                 <h4>${car.name}</h4>
                 <div class="card-like">
-                  <i class="fa fa-heart"></i><span>50</span>
+                    <i class="fa fa-heart ${
+                      car.is_liked ? "liked" : ""
+                    }" data-carId="${car.id}"></i><span>${
+          car.liked_count
+        }</span>
                 </div>
                 <div class="card-icons flex-grow-1">
                   <span class="icon"><img src="../static/images/icons/1.svg" alt="" />${
@@ -39,13 +39,20 @@ function sliderCars() {
                 </div>
                 <div class="card-price d-flex justify-content-between align-items-center">
                 <div>Daily rate from <span>$265</span></div>
-                  <a class="card-btn btn btn-primary font-title fw-800 fs-14 " href="${carUrl}">Rent Now</a>
+                  <a class="card-btn btn btn-primary font-title fw-800 fs-14 " href="/car/${
+                    car.id
+                  }">Rent Now</a>
                 </div>
               </div>
             </div>
 
         `;
         carContainer.appendChild(carItem);
+        //為每一台車添加點擊事件監聽器，並執行事件發生後相應動作
+        const likeIcon = carItem.querySelector(`i[data-carId="${car.id}"]`);
+        likeIcon.addEventListener("click", () => {
+          toggleLike(car.id);
+        });
       });
       // 初始化 Tiny Slider
       tns({
@@ -57,15 +64,15 @@ function sliderCars() {
         gutter: 24,
       });
     })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
+    .catch((err) => {
+      console.error("Error fetching data:", err);
     });
 }
 
 let currentPage = 1;
 let currentFilters = "";
 
-// filter
+//篩選條件處理
 function applyFilters() {
   currentPage = 1;
   let filters = [];
@@ -132,6 +139,63 @@ function applyFilters() {
   displayCarList(currentPage, currentFilters);
 }
 
+// //toggle將汽車加入我的最愛
+// function toggleLike(e) {
+//   const target = e.target;
+//   const carId = target.dataset.carid;
+//   const isLiked = target.dataset.isliked === "true";
+//   let count = Number(target.dataset.count);
+
+//   // 根據資料設置相應樣式
+//   if (isLiked) {
+//     target.dataset.isliked = "false";
+//     target.classList.remove("liked");
+//     target.nextElementSibling.innerText = count - 1;
+//     target.dataset.count = count - 1;
+//   } else {
+//     target.dataset.isliked = "true";
+//     target.classList.add("liked");
+//     target.nextElementSibling.innerText = count + 1;
+//     target.dataset.count = count + 1;
+//   }
+
+//   // 發送 API 請求
+//   fetch(`/toggle_like_car/${carId}`, { method: "POST" })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       if (data.status === "noauth") {
+//         alert("請先登入！");
+//         return;
+//       }
+//     })
+//     .catch((err) => console.error("Error toggling like:", err));
+// }
+//toggle將汽車加入我的最愛
+function toggleLike(carId) {
+  //取得該使用者喜歡的所有汽車資料
+  fetch(`/api/toggle_like_car/${carId}`, { method: "POST" })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "noauth") {
+        alert("請先登入！");
+        return;
+      }
+      const likeIcon = document.querySelector(`i[data-carid="${carId}"]`);
+      const likeCount = likeIcon.nextElementSibling;
+      //根據資料設置相應樣式
+      if (data.status === "liked") {
+        likeIcon.classList.add("liked");
+        likeIcon.dataset.isLiked = "true";
+      } else {
+        likeIcon.classList.remove("liked");
+        likeIcon.dataset.isLiked = "false";
+      }
+      //根據資料設置喜歡該汽車的用戶數
+      likeCount.innerText = data.like_count;
+    })
+    .catch((err) => console.error("Error toggling like:", err));
+}
+
 // loading cars
 function displayCars(pageNumber, filterParams) {
   let url;
@@ -149,12 +213,10 @@ function displayCars(pageNumber, filterParams) {
         carsMenu.innerHTML = "";
 
         if (!data.has_next) {
-          document.getElementById("next-page-btn").disabled = true;
+          document.querySelector(".next-cars").disabled = true;
         } else {
-          document.getElementById("next-page-btn").disabled = false;
+          document.querySelector(".next-cars").disabled = false;
         }
-
-        console.log(data.cars.length);
 
         data.cars.forEach((car) => {
           const carItem = document.createElement("div");
@@ -164,7 +226,7 @@ function displayCars(pageNumber, filterParams) {
             "d-flex",
             "flex-column"
           );
-          const carUrl = getCarUrl(car.id);
+
           carItem.innerHTML = `
             <div class="de-item mb30 flex-grow-1 d-flex flex-column">
               <div class="d-img">
@@ -176,7 +238,13 @@ function displayCars(pageNumber, filterParams) {
                 <div class="d-text flex-grow-1 d-flex flex-column">
                   <h4 class="flex-grow-1">${car.name}</h4>
                   <div class="d-item_like">
-                    <i class="fa fa-heart"></i><span>50</span>
+
+                  <i class="fa fa-heart ${car.is_liked ? "liked" : ""}" 
+                    data-carid="${car.id}" 
+                    data-isliked="${car.is_liked}" 
+                    data-count="${car.liked_count}"></i>
+                  <span>${car.liked_count}</span>
+
                   </div>
                   <div class="d-atr-group">
                     <span class="d-atr"><img src="../static/images/icons/1.svg" alt="" />${
@@ -191,18 +259,26 @@ function displayCars(pageNumber, filterParams) {
                   </div>
                   <div class="d-price">
                     Daily rate from <span>$${car.price}</span>
-                    <a class="btn-main" href="${carUrl}">Rent Now</a>
+                    <a class="btn-main" href="/car/${car.id}">Rent Now</a>
                   </div>
                 </div>
               </div>
             </div>
           `;
           carsMenu.appendChild(carItem);
+          //為每一台車添加點擊事件監聽器，並執行事件發生後相應動作
+          const likeIcon = carItem.querySelector(`i[data-carid="${car.id}"]`);
+          // likeIcon.addEventListener("click", (e) => {
+          //   toggleLike(e);
+          // });
+          likeIcon.addEventListener("click", () => {
+            toggleLike(car.id);
+          });
         });
       }
     })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
+    .catch((err) => {
+      console.error("Error fetching data:", err);
     });
 }
 function displayCarList(pageNumber, filterParams) {
@@ -219,14 +295,14 @@ function displayCarList(pageNumber, filterParams) {
       if (carsList) {
         carsList.innerHTML = "";
         if (!data.has_next) {
-          document.getElementById("next-page-btn").disabled = true;
+          document.querySelector(".next-cars-list").disabled = true;
         } else {
-          document.getElementById("next-page-btn").disabled = false;
+          document.querySelector(".next-cars-list").disabled = false;
         }
         data.cars.forEach((car) => {
           const carItem = document.createElement("div");
           carItem.classList.add("col-lg-12");
-          const carUrl = getCarUrl(car.id);
+
           carItem.innerHTML = `
               <div class="de-item-list mb30">
               <div class="d-img">
@@ -257,7 +333,7 @@ function displayCarList(pageNumber, filterParams) {
                 Daily rate from <span>$${car.price}</span>
                 <a
                   class="btn-main"
-                  href="${carUrl}"
+                  href="/car/${car.id}"
                   >Rent Now</a
                 >
               </div>
@@ -267,8 +343,8 @@ function displayCarList(pageNumber, filterParams) {
         });
       }
     })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
+    .catch((err) => {
+      console.error("Error fetching data:", err);
     });
 }
 function displayCar(id) {
@@ -342,7 +418,8 @@ function displayCar(id) {
         <ul class="ul-style-2">
         </ul>
       `;
-
+      document.getElementById("car-id-input").value = car.id;
+      document.getElementById("car-price-input").value = car.price;
       // 初始化 Tiny Slider
       tns({
         container: ".my-slider",
@@ -355,8 +432,70 @@ function displayCar(id) {
         speed: 600,
       });
     })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
+    .catch((err) => {
+      console.error("Error fetching data:", err);
+    });
+}
+function favoriteCars(pageNumber) {
+  let url = `/api/favorite_cars?page=${pageNumber}`;
+
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      const favoriteCars = document.getElementById("favorite-cars");
+      if (favoriteCars) {
+        favoriteCars.innerHTML = "";
+        if (!data.has_next) {
+          document.querySelector(".next-favorites").disabled = true;
+        } else {
+          document.querySelector(".next-favorites").disabled = false;
+        }
+
+        data.cars.forEach((car) => {
+          const carItem = document.createElement("div");
+
+          carItem.innerHTML = `
+              <div class="de-item-list no-border mb30">
+              <div class="d-img">
+                <img src="../static/cars-img/${car.brand}${
+            car.year
+          }${car.model.replace(/\s/g, "")}/img_0.jpg" class="img-fluid" alt="${
+            car.name
+          }" />
+              </div>
+              <div class="d-info">
+                <div class="d-text">
+                  <h4>${car.name}</h4>
+                  <div class="d-atr-group">
+                    <ul class="d-atr">
+                      <li><span>Type:</span>${car.body}</li>
+                      <li><span>Seats:</span>${car.seat}</li>
+                      <li><span>Doors:</span>${car.door}</li>
+                      <li><span>Year:</span>${car.year}</li>
+                      <li><span>Fuel:</span>${car.power_type}</li>
+                      <li><span>Engine:</span>${car.displacement}</li>
+                      <li><span>Car length:</span>${car.car_length}</li>
+                      <li><span>Wheelbase:</span>${car.wheelbase}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="d-price">
+                Daily rate from <span>$${car.price}</span>
+                <a
+                  class="btn-main"
+                  href="/car/${car.id}"
+                  >Rent Now</a
+                >
+              </div>
+              <div class="clearfix"></div>
+            </div>`;
+          favoriteCars.appendChild(carItem);
+        });
+      }
+    })
+    .catch((err) => {
+      console.error("Error fetching data:", err);
     });
 }
 
@@ -366,6 +505,7 @@ function prevPage() {
     currentPage--;
     displayCars(currentPage, currentFilters);
     displayCarList(currentPage, currentFilters);
+    favoriteCars(currentPage);
   }
 }
 
@@ -373,6 +513,7 @@ function nextPage() {
   currentPage++;
   displayCars(currentPage, currentFilters);
   displayCarList(currentPage, currentFilters);
+  favoriteCars(currentPage);
 }
 // 上傳圖片
 async function uploadImage() {

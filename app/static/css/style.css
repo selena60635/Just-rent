@@ -3921,13 +3921,14 @@ hr {
 .form-border textarea,
 .form-underline input[type="email"],
 .form-border input[type="password"],
+.form-border input[type="email"],
 .form-border input[type="date"],
 .form-border select {
   padding: 8px;
   margin-bottom: 10px;
-  border: none;
-  border: solid 2px #eeeeee;
-  background: rgba(0, 0, 0, 0.025);
+  /* border: none;
+  border: solid 2px #eeeeee; */
+  /* background: rgba(0, 0, 0, 0.025); */
   border-radius: 6px;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
@@ -3964,12 +3965,12 @@ hr {
 
 .form-border input[type="text"]:focus,
 .form-border input[type="password"]:focus,
+.form-border input[type="email"]:focus,
 .form-border textarea:focus,
 .form-underline input[type="email"]:focus,
 .form-border input[type="date"]:focus,
 .form-border select:focus {
   background: rgba(var(--secondary-color-rgb), 0.1);
-  
 }
 
 .text-light select option {
@@ -12150,7 +12151,7 @@ input[type="range"]::-moz-range-thumb {
 
 .de-item .d-item_like i {
   color: #cccccc;
-  margin-right: 6px;
+  /* margin-right: 6px; */
 }
 
 .rtl .de-item .d-item_like i {

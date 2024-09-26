@@ -1,8 +1,14 @@
 from app import db
 from app.api import bp
 from flask import jsonify, current_app, request
-from sqlalchemy import and_, or_, text
+from sqlalchemy import or_, text
 from app.models.car import Car
+from app.models.user import likes 
+from app.models.location import Location 
+from flask_login import current_user, login_required
+from functools import wraps
+from app.models import Car
+
 
 @bp.route('/api/cars', methods=['GET'])
 def get_cars():
@@ -12,7 +18,6 @@ def get_cars():
     seat = request.args.get('seat')
     engine = request.args.get('engine')
     max_price = request.args.get('max_price')
-    # print(body,seat)
 
     conditions = []
 
@@ -56,7 +61,7 @@ def get_cars():
     pagination = query.paginate(page=page, per_page=per_page)
 
     cars = pagination.items
-    # print(query.statement.compile(compile_kwargs={"literal_binds": True}))
+
     response = {
         "cars": [{
             "id": car.id,
@@ -68,7 +73,9 @@ def get_cars():
             "displacement": car.displacement,
             "seat": car.seat,
             "door": car.door,
-            "price": car.price
+            "price": car.price,
+            "is_liked": current_user.is_authenticated and current_user in car.liked_by,
+            "liked_count": car.liked_by.count() or 0,
         } for car in cars],
         "has_next": pagination.has_next
     }
@@ -84,3 +91,60 @@ def get_car(id):
     car = result.fetchone()
     car_dict = dict(car._mapping)
     return jsonify(car_dict)
+
+
+
+def login_required_auth(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return jsonify({'status': 'noauth'})
+        return f(*args, **kwargs)
+    return decorated_function
+@bp.route('/api/toggle_like_car/<int:id>', methods=['POST'])
+@login_required_auth
+def toggle_like(id):
+    car = Car.query.get_or_404(id)
+    if current_user in car.liked_by:
+        car.liked_by.remove(current_user)
+        db.session.commit()
+        return jsonify({'status': 'unliked', 'like_count': car.liked_by.count()})
+    else:
+        car.liked_by.append(current_user)
+        db.session.commit()
+        return jsonify({'status': 'liked', 'like_count': car.liked_by.count()})
+
+
+@bp.route('/api/favorite_cars', methods=['GET'])
+@login_required
+def get_favorite_cars():
+    page = request.args.get('page', default=1, type=int)
+    per_page = 3 #每頁資料筆數
+
+    query = db.session.query(Car).join(likes).filter(likes.c.user_id == current_user.id)
+
+    pagination = query.paginate(page=page, per_page=per_page)
+    cars = pagination.items
+
+    response = {
+        "cars": [{
+            "id": car.id,
+            "name": car.name,
+            "brand": car.brand,
+            "year": car.year,
+            "model": car.model,
+            "body": car.body,
+            "displacement": car.displacement,
+            "seat": car.seat,
+            "door": car.door,
+            "price": car.price,
+            "is_liked": True, 
+            "liked_count": car.liked_by.count() or 0,
+        } for car in cars],
+        "has_next": pagination.has_next
+    }
+    return jsonify(response)
+
+
+
+

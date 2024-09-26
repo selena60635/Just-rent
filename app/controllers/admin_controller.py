@@ -34,19 +34,15 @@ def super_admin_required(f):
 
 
 @bp.route('/admin')
-@admin_required
-def admin_index():
-    return render_template('admin/index.html')
-
 @bp.route('/admin/cars', methods=['GET', 'POST'])
 @admin_required
-def admin_cars():
+def admin_index():
     sql = text('SELECT * FROM cars')
     result = db.session.execute(sql)
     cars = []
     for row in result:
         cars.append(row)
-    return render_template('admin/cars.html', cars=cars)
+    return render_template('admin/index.html', cars=cars)
 
 @bp.route('/admin/car/<int:id>')
 @admin_required

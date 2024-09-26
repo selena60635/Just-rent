@@ -36,11 +36,11 @@
       rel="stylesheet"
       type="text/css"
     />
-    <link
+    <!-- <link
       href="{{ url_for('static', filename='css/style.css') }}"
       rel="stylesheet"
       type="text/css"
-    />
+    /> -->
     <link
       href="{{ url_for('static', filename='css/coloring.css') }}"
       rel="stylesheet"
@@ -54,13 +54,26 @@
       rel="stylesheet"
       type="text/css"
     />
-    <link
+    <!-- <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
       crossorigin="anonymous"
+    /> -->
+    <!-- 引入 Bootstrap 和 Bootstrap Datepicker 的 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
     />
-
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/style.css') }}"
+      rel="stylesheet"
+      type="text/css"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/all.css') }}"
@@ -69,6 +82,7 @@
 
   <body>
     <div id="wrapper">
+      <div id="de-preloader"></div>
       <header class="transparent header-light scroll-light has-topbar">
         <div id="topbar" class="topbar-dark text-light">
           <div class="container">
@@ -349,10 +363,15 @@
           </div>
         </div>
       </footer>
-      <!-- footer close -->
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/tiny-slider@2.9.3/dist/min/tiny-slider.js"></script>
     <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
+
+    <!-- 引入 Bootstrap 和 Bootstrap Datepicker 的 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- 引入 Bootstrap 和 Bootstrap Datepicker 的 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/tiny-slider@2.9.3/dist/min/tiny-slider.js"></script>
+
     <script src="{{ url_for('static', filename='js/designesia.js') }}"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
@@ -363,9 +382,9 @@
     <script src="{{ url_for('static', filename='js/all.js') }}"></script>
     {% if slider_cars %}
     <script>
-      window.onload = () => {
+      document.addEventListener("DOMContentLoaded", function () {
         sliderCars();
-      };
+      });
     </script>
     {% endif %} {% if id %}
     <script>
@@ -379,22 +398,34 @@
       document.addEventListener("DOMContentLoaded", function () {
         displayCars(1);
         document
-          .getElementById("prev-page-btn")
+          .querySelector(".prev-cars")
           .addEventListener("click", prevPage);
         document
-          .getElementById("next-page-btn")
+          .querySelector(".next-cars")
           .addEventListener("click", nextPage);
       });
     </script>
-    {% endif %} {% if display_cars_list %}
+    {% endif %}{% if display_cars_list %}
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         displayCarList(1);
         document
-          .getElementById("prev-page-btn")
+          .querySelector(".prev-cars-list")
           .addEventListener("click", prevPage);
         document
-          .getElementById("next-page-btn")
+          .querySelector(".next-cars-list")
+          .addEventListener("click", nextPage);
+      });
+    </script>
+    {% endif %} {% if favorite_cars %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        favoriteCars(1);
+        document
+          .querySelector(".prev-favorites")
+          .addEventListener("click", prevPage);
+        document
+          .querySelector(".next-favorites")
           .addEventListener("click", nextPage);
       });
     </script>

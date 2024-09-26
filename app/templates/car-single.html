@@ -2,7 +2,6 @@
 <div class="no-bottom no-top zebra" id="content">
   <div id="top"></div>
 
-  <!-- section begin -->
   <section id="subheader" class="jarallax text-light mb-90">
     <img
       src="{{ url_for('static', filename='images/background/2.jpg') }}"
@@ -20,7 +19,6 @@
       </div>
     </div>
   </section>
-  <!-- section close -->
 
   <section id="section-car-details" class="mb-90">
     <div class="container">
@@ -138,9 +136,25 @@
           </div>
           <div class="spacer-30"></div>
           <div class="de-box mb25">
-            <form name="contactForm" id="contact_form" method="post">
+            <form
+              action="{{ url_for('api.add_order')}}"
+              name="form-booking"
+              id="form-booking"
+              method="post"
+            >
               <h4>Booking this car</h4>
-
+              <input
+                type="hidden"
+                id="car-id-input"
+                name="car-id-input"
+                value=""
+              />
+              <input
+                type="hidden"
+                id="car-price-input"
+                name="car-price-input"
+                value=""
+              />
               <div class="spacer-20"></div>
 
               <div class="row">
@@ -148,34 +162,28 @@
                   <h5>Pick Up Location</h5>
                   <input
                     type="text"
-                    name="PickupLocation"
-                    onfocus="geolocate()"
+                    name="pickupLoc"
                     placeholder="Enter your pickup location"
-                    id="autocomplete"
-                    autocomplete="off"
+                    id="pickup"
                     class="form-control"
+                    list="pickup-locs"
+                    required
                   />
-
-                  <div class="jls-address-preview jls-address-preview--hidden">
-                    <div class="jls-address-preview__header"></div>
-                  </div>
+                  <datalist id="pickup-locs"></datalist>
                 </div>
 
                 <div class="col-lg-12 mb20">
                   <h5>Drop Off Location</h5>
                   <input
                     type="text"
-                    name="DropoffLocation"
-                    onfocus="geolocate()"
+                    name="dropoffLoc"
                     placeholder="Enter your dropoff location"
-                    id="autocomplete2"
-                    autocomplete="off"
+                    id="dropoff"
                     class="form-control"
+                    list="dropoff-locs"
+                    required
                   />
-
-                  <div class="jls-address-preview jls-address-preview--hidden">
-                    <div class="jls-address-preview__header"></div>
-                  </div>
+                  <datalist id="dropoff-locs"></datalist>
                 </div>
 
                 <div class="col-lg-12 mb20">
@@ -183,14 +191,14 @@
                   <div class="date-time-field">
                     <input
                       type="text"
-                      id="date-picker"
-                      name="Pick Up Date"
-                      value=""
+                      id="pickup-date"
+                      name="pickup-date"
+                      placeholder="yyyy / mm / dd"
+                      class="form-control"
+                      required
                     />
-                    <select name="Pick Up Time" id="pickup-time">
-                      <option selected disabled value="Select time">
-                        Time
-                      </option>
+                    <select name="pickup-time" id="pickup-time" required>
+                      <option selected disabled value="">Time</option>
                       <option value="00:00">00:00</option>
                       <option value="00:30">00:30</option>
                       <option value="01:00">01:00</option>
@@ -248,14 +256,14 @@
                   <div class="date-time-field">
                     <input
                       type="text"
-                      id="date-picker-2"
-                      name="Collection Date"
-                      value=""
+                      id="return-date"
+                      name="return-date"
+                      placeholder="yyyy / mm / dd"
+                      class="form-control"
+                      required
                     />
-                    <select name="Collection Time" id="collection-time">
-                      <option selected disabled value="Select time">
-                        Time
-                      </option>
+                    <select name="return-time" id="return-time" required>
+                      <option selected disabled value="">Time</option>
                       <option value="00:00">00:00</option>
                       <option value="00:30">00:30</option>
                       <option value="01:00">01:00</option>
@@ -338,4 +346,28 @@
     </div>
   </section>
 </div>
+
+<div
+  class="modal fade"
+  id="orderSuccessModal"
+  tabindex="-1"
+  aria-labelledby="orderSuccessModalLabel"
+  aria-hidden="true"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="orderSuccessModalLabel">訂單新增成功</h5>
+      </div>
+      <p id="modalBookingDetails"></p>
+
+      <button id="pay-button" class="btn btn-primary">付款</button>
+      <button id="cancel-button" class="btn btn-danger">取消訂單</button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/booking.js') }}"></script>
 {% endblock %}

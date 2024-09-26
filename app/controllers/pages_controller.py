@@ -87,4 +87,3 @@ def register():
 @bp.route('/error')
 def error():
     return render_template('errors/404.html')
-

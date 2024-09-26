@@ -13,7 +13,6 @@ li {
   list-style: none;
 }
 body,
-section,
 ul {
   margin: 0;
   padding: 0;
@@ -343,6 +342,14 @@ a {
   letter-spacing: 5px;
 }
 .form-border input[type="text"]:focus,
-.form-border input[type="password"]:focus {
+.form-border input[type="password"]:focus,
+.form-border input[type="email"]:focus {
   box-shadow: 0 0 0 3px rgba(30, 203, 21, 0.3);
+}
+.de-item .d-item_like i.liked,
+i.liked {
+  color: #ff2d2d;
+}
+.datepicker {
+  padding: 1rem;
 }
