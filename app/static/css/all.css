@@ -13,7 +13,6 @@ li {
   list-style: none;
 }
 body,
-section,
 ul {
   margin: 0;
   padding: 0;
@@ -350,4 +349,7 @@ a {
 .de-item .d-item_like i.liked,
 i.liked {
   color: #ff2d2d;
+}
+.datepicker {
+  padding: 1rem;
 }

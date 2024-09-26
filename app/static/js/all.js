@@ -173,7 +173,7 @@ function applyFilters() {
 //toggle將汽車加入我的最愛
 function toggleLike(carId) {
   //取得該使用者喜歡的所有汽車資料
-  fetch(`/toggle_like_car/${carId}`, { method: "POST" })
+  fetch(`/api/toggle_like_car/${carId}`, { method: "POST" })
     .then((response) => response.json())
     .then((data) => {
       if (data.status === "noauth") {
@@ -418,7 +418,8 @@ function displayCar(id) {
         <ul class="ul-style-2">
         </ul>
       `;
-
+      document.getElementById("car-id-input").value = car.id;
+      document.getElementById("car-price-input").value = car.price;
       // 初始化 Tiny Slider
       tns({
         container: ".my-slider",

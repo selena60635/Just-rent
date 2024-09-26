@@ -1,11 +1,13 @@
 from app import db
 from app.api import bp
 from flask import jsonify, current_app, request
-from sqlalchemy import and_, or_, text
+from sqlalchemy import or_, text
 from app.models.car import Car
-from flask_login import current_user, login_required
 from app.models.user import likes 
+from app.models.location import Location 
+from flask_login import current_user, login_required
 from functools import wraps
+from app.models import Car
 
 
 @bp.route('/api/cars', methods=['GET'])
@@ -92,16 +94,15 @@ def get_car(id):
 
 
 
-def login_required_json(f):
+def login_required_auth(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
             return jsonify({'status': 'noauth'})
         return f(*args, **kwargs)
     return decorated_function
-@bp.route('/toggle_like_car/<int:id>', methods=['POST'])
-# @login_required
-@login_required_json
+@bp.route('/api/toggle_like_car/<int:id>', methods=['POST'])
+@login_required_auth
 def toggle_like(id):
     car = Car.query.get_or_404(id)
     if current_user in car.liked_by:
@@ -142,5 +143,8 @@ def get_favorite_cars():
         } for car in cars],
         "has_next": pagination.has_next
     }
-    print(response)
     return jsonify(response)
+
+
+
+
