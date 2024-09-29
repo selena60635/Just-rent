@@ -117,16 +117,6 @@
               <spam class="d-value">Black</spam>
             </div>
           </div>
-
-          <div class="spacer-single"></div>
-
-          <h4>Features</h4>
-          <ul class="ul-style-2">
-            <li>Bluetooth</li>
-            <li>Multimedia Player</li>
-            <li>Central Lock</li>
-            <li>Sunroof</li>
-          </ul>
         </div>
 
         <div class="col-lg-3">
@@ -349,22 +339,31 @@
 
 <div
   class="modal fade"
-  id="orderSuccessModal"
-  tabindex="-1"
-  aria-labelledby="orderSuccessModalLabel"
+  id="form-order"
   aria-hidden="true"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
 >
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="orderSuccessModalLabel">訂單新增成功</h5>
+        <h5 class="modal-title">Order Info</h5>
       </div>
-      <p id="modalBookingDetails"></p>
-
-      <button id="pay-button" class="btn btn-primary">付款</button>
-      <button id="cancel-button" class="btn btn-danger">取消訂單</button>
+      <ul id="form-order-content" class="m-4"></ul>
+      <div class="d-flex justify-content-center mb-4 gap-2">
+        <button
+          id="pay-button"
+          class="btn btn-primary font-title fw-800 fs-14 py-1 px-30 me-2"
+        >
+          前往付款
+        </button>
+        <button
+          id="cancel-button"
+          class="btn btn-danger font-title fw-800 fs-14 py-1 px-30 me-2"
+        >
+          取消訂單
+        </button>
+      </div>
     </div>
   </div>
 </div>

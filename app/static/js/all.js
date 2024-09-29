@@ -38,7 +38,7 @@ function sliderCars() {
                   }</span>
                 </div>
                 <div class="card-price d-flex justify-content-between align-items-center">
-                <div>Daily rate from <span>$265</span></div>
+                <div>Daily rate from <span>$${car.price}</span></div>
                   <a class="card-btn btn btn-primary font-title fw-800 fs-14 " href="/car/${
                     car.id
                   }">Rent Now</a>
@@ -112,8 +112,6 @@ function applyFilters() {
     const seatFilterStr = seatFilters.join(",");
     filters.push(`&seat=${seatFilterStr}`);
   }
-  console.log(bodyFilters);
-
   // engine
   const engineFilters = [];
   const engineInputs = document.querySelectorAll(
@@ -132,7 +130,11 @@ function applyFilters() {
 
   // Price
   const maxPrice = document.querySelector(".input-max").value;
-  filters.push(`&max_price=${maxPrice}`);
+  if (maxPrice) {
+    filters.push(`&max_price=${maxPrice}`);
+  }
+  // console.log(filters);
+  // console.log(currentFilters);
   // 篩選條件發生變化時重新顯示汽車列表
   currentFilters = filters.join(","); // 將當前的篩選條件保存
   displayCars(currentPage, currentFilters);
@@ -413,10 +415,7 @@ function displayCar(id) {
             <span class="d-title">Wheelbase</span><span class="d-value">${car.wheelbase}</span>
           </div>
         </div>
-        <div class="spacer-single"></div>
-        <h4>Features</h4>
-        <ul class="ul-style-2">
-        </ul>
+
       `;
       document.getElementById("car-id-input").value = car.id;
       document.getElementById("car-price-input").value = car.price;

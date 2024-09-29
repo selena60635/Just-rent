@@ -16,10 +16,6 @@
     <!-- CSS Files
     ================================================== -->
     <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/tiny-slider@2.9.3/dist/tiny-slider.css"
-    />
-    <link
       href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
       rel="stylesheet"
       type="text/css"
@@ -36,17 +32,16 @@
       rel="stylesheet"
       type="text/css"
     />
-    <!-- <link
+    <link
       href="{{ url_for('static', filename='css/style.css') }}"
       rel="stylesheet"
       type="text/css"
-    /> -->
+    />
     <link
       href="{{ url_for('static', filename='css/coloring.css') }}"
       rel="stylesheet"
       type="text/css"
     />
-
     <!-- color scheme -->
     <link
       id="colors"
@@ -54,26 +49,13 @@
       rel="stylesheet"
       type="text/css"
     />
-    <!-- <link
+    <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
       crossorigin="anonymous"
-    /> -->
-    <!-- 引入 Bootstrap 和 Bootstrap Datepicker 的 CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
     />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="{{ url_for('static', filename='css/style.css') }}"
-      rel="stylesheet"
-      type="text/css"
-    />
+
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/all.css') }}"
@@ -83,6 +65,7 @@
   <body>
     <div id="wrapper">
       <div id="de-preloader"></div>
+
       <header class="transparent header-light scroll-light has-topbar">
         <div id="topbar" class="topbar-dark text-light">
           <div class="container">
@@ -221,17 +204,9 @@
                 </div>
                 <div class="de-flex-col">
                   <div class="menu_side_area">
-                    {% if current_user.is_anonymous %}
                     <a href="{{ url_for('controller.login') }}" class="btn-main"
                       >Sign In</a
                     >
-                    {% else %}
-                    <a
-                      href="{{ url_for('controller.logout') }}"
-                      class="btn-main"
-                      >Sign Out</a
-                    >
-                    {% endif %}
                     <span id="menu-btn"></span>
                   </div>
                 </div>
@@ -241,163 +216,104 @@
         </div>
       </header>
 
-      {% block content %}{% endblock %}
-      <a href="#" id="back-to-top"></a>
-
-      <footer class="text-light">
-        <div class="container">
-          <div class="row g-custom-x">
-            <div class="col-lg-3">
-              <div class="widget">
-                <h5>About Rentaly</h5>
-                <p>
-                  Where quality meets affordability. We understand the
-                  importance of a smooth and enjoyable journey without the
-                  burden of excessive costs. That's why we have meticulously
-                  crafted our offerings to provide you with top-notch vehicles
-                  at minimum expense.
-                </p>
-              </div>
-            </div>
-
-            <div class="col-lg-3">
-              <div class="widget">
-                <h5>Contact Info</h5>
-                <address class="s1">
-                  <span
-                    ><i class="id-color fa fa-map-marker fa-lg"></i>08 W 36th
-                    St, New York, NY 10001</span
+      <div class="no-bottom no-top" id="content">
+        <div id="top"></div>
+        <section id="section-hero" aria-label="section" class="jarallax">
+          <img
+            src="{{ url_for('static', filename='images/background/2.jpg') }}"
+            class="jarallax-img"
+            alt=""
+          />
+          <div class="v-center">
+            <div class="container">
+              <div
+                class="row justify-content-center d-flex align-items-stretch gap-4"
+              >
+                <div class="col-lg-5">
+                  <div
+                    class="padding40 rounded-3 shadow-soft d-flex flex-column h-100"
+                    data-bgcolor="#ffffff"
                   >
-                  <span
-                    ><i class="id-color fa fa-phone fa-lg"></i>+1 333 9296</span
-                  >
-                  <span
-                    ><i class="id-color fa fa-envelope-o fa-lg"></i
-                    ><a href="mailto:contact@example.com"
-                      >contact@example.com</a
-                    ></span
-                  >
-                  <span
-                    ><i class="id-color fa fa-file-pdf-o fa-lg"></i
-                    ><a href="#">Download Brochure</a></span
-                  >
-                </address>
-              </div>
-            </div>
-
-            <div class="col-lg-3">
-              <h5>Quick Links</h5>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="widget">
-                    <ul>
-                      <li><a href="#">About</a></li>
-                      <li><a href="#">Blog</a></li>
-                      <li><a href="#">Careers</a></li>
-                      <li><a href="#">News</a></li>
-                      <li><a href="#">Partners</a></li>
+                    <h4>Order info</h4>
+                    <ul
+                      id="booking-data"
+                      data-price="{{ booking.total_price }}"
+                      data-booking-id="{{ booking.id }}"
+                      class="d-flex flex-column justify-content-around flex-grow-1"
+                    >
+                      <li class="mb-3">
+                        <span class="fw-800">名稱：</span>{{ booking.car.name }}
+                      </li>
+                      <li class="mb-3">
+                        <span class="fw-800">取車地點：</span
+                        >{{booking.pickup_location.name}}
+                        ({{booking.pickup_location.address}})
+                      </li>
+                      <li class="mb-3">
+                        <span class="fw-800">還車地點：</span
+                        >{{booking.return_location.name}}
+                        ({{booking.return_location.address}})
+                      </li>
+                      <li class="mb-3">
+                        <span class="fw-800">取車時間：</span>{{
+                        booking.pickup_date }}-{{ booking.pickup_time }}
+                      </li>
+                      <li class="mb-3">
+                        <span class="fw-800">還車時間：</span
+                        >{{booking.return_date }}-{{ booking.return_time }}
+                      </li>
+                      <li class="mb-3">
+                        <span class="fw-800">租用時數：</span>{{ rental_duration
+                        }} 小時
+                      </li>
+                      <li>
+                        <span class="fw-800">總價：</span>{{ booking.total_price
+                        }} 元
+                      </li>
                     </ul>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div class="col-lg-3">
-              <div class="widget">
-                <h5>Social Network</h5>
-                <div class="social-icons">
-                  <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-                  <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-                  <a href="#"><i class="fa fa-linkedin fa-lg"></i></a>
-                  <a href="#"><i class="fa fa-pinterest fa-lg"></i></a>
-                  <a href="#"><i class="fa fa-rss fa-lg"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="subfooter">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="de-flex">
-                  <div class="de-flex-col">
-                    <a href="{{ url_for('controller.home') }}">
-                      Copyright 2023 - Rentaly by Designesia
-                    </a>
+                <div class="col-lg-5">
+                  <div
+                    class="padding40 rounded-3 shadow-soft d-flex flex-column"
+                    data-bgcolor="#ffffff"
+                  >
+                    <h4>Payment info</h4>
+                    <form id="payment-form" class="flex-grow-1">
+                      <div class="mb-3">
+                        <label for="card-number" class="form-label">卡號</label>
+                        <div class="tpfield" id="card-number"></div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="card-expiration-date" class="form-label"
+                          >有效期限</label
+                        >
+                        <div class="tpfield" id="card-expiration-date"></div>
+                      </div>
+                      <div class="mb-3">
+                        <label for="card-ccv" class="form-label">後三碼</label>
+                        <div class="tpfield" id="card-ccv"></div>
+                      </div>
+                      <button
+                        id="tappay-btn"
+                        class="btn btn-primary font-title fw-800 fs-14 py-1 px-30 me-2"
+                        type="submit"
+                      >
+                        付款
+                      </button>
+                    </form>
                   </div>
-                  <ul class="menu-simple">
-                    <li><a href="#">Terms &amp; Conditions</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                  </ul>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </footer>
+        </section>
+      </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
-
-    <!-- 引入 Bootstrap 和 Bootstrap Datepicker 的 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <!-- 引入 Bootstrap 和 Bootstrap Datepicker 的 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/tiny-slider@2.9.3/dist/min/tiny-slider.js"></script>
-
     <script src="{{ url_for('static', filename='js/designesia.js') }}"></script>
-
-    <script src="{{ url_for('static', filename='js/all.js') }}"></script>
-    {% if slider_cars %}
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        sliderCars();
-      });
-    </script>
-    {% endif %} {% if id %}
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const carId = "{{ id }}";
-        displayCar(carId);
-      });
-    </script>
-    {% endif %} {% if display_cars %}
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        displayCars(1);
-        document
-          .querySelector(".prev-cars")
-          .addEventListener("click", prevPage);
-        document
-          .querySelector(".next-cars")
-          .addEventListener("click", nextPage);
-      });
-    </script>
-    {% endif %}{% if display_cars_list %}
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        displayCarList(1);
-        document
-          .querySelector(".prev-cars-list")
-          .addEventListener("click", prevPage);
-        document
-          .querySelector(".next-cars-list")
-          .addEventListener("click", nextPage);
-      });
-    </script>
-    {% endif %} {% if favorite_cars %}
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        favoriteCars(1);
-        document
-          .querySelector(".prev-favorites")
-          .addEventListener("click", prevPage);
-        document
-          .querySelector(".next-favorites")
-          .addEventListener("click", nextPage);
-      });
-    </script>
-    {% endif %}
+    <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script>
+    <script src="{{ url_for('static', filename='js/payment.js') }}"></script>
   </body>
 </html>

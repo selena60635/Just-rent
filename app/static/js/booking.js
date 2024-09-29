@@ -1,22 +1,3 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//   fetch("/api/booking/locations")
-//     .then((response) => response.json())
-//     .then((data) => {
-//       const pickupDatalist = document.getElementById("pickup-locs");
-//       const dropoffDatalist = document.getElementById("dropoff-locs");
-
-//       data.forEach((location) => {
-//         const option = document.createElement("option");
-//         option.value = location;
-//         pickupDatalist.appendChild(option);
-
-//         const dropoffOption = option.cloneNode(true);
-//         dropoffDatalist.appendChild(dropoffOption);
-//       });
-//     })
-//     .catch((err) => console.error("Error loading locations:", err));
-// });
-
 loadLocs();
 
 async function loadLocs() {
@@ -61,34 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     todayHighlight: true,
   });
 });
-// document.addEventListener("DOMContentLoaded", () => {
-//   const bookingForm = document.querySelector("form");
-
-//   bookingForm.addEventListener("submit", (e) => {
-//     e.preventDefault();
-//     // const pickupLoc = document.getElementById("pickup").value;
-//     // const dropoffLoc = document.getElementById("dropoff").value;
-
-//     const pickupDate = document.getElementById("pickup-date").value;
-//     const pickupTime = document.getElementById("pickup-time").value;
-//     const returnDate = document.getElementById("return-date").value;
-//     const returnTime = document.getElementById("return-time").value;
-//     const pickupDateTime = new Date(`${pickupDate}T${pickupTime}`);
-//     const returnDateTime = new Date(`${returnDate}T${returnTime}`);
-
-//     // if (pickupLoc === dropoffLoc) {
-//     //   alert("Pick Up Location and Drop Off Location cannot be the same.");
-//     //   return;
-//     // }
-
-//     if (returnDateTime <= pickupDateTime) {
-//       alert("Return Date & Time cannot be earlier than Pick Up Date & Time.");
-//       return;
-//     }
-
-//     bookingForm.submit();
-//   });
-// });
 
 document.addEventListener("DOMContentLoaded", () => {
   const bookingForm = document.getElementById("form-booking");
@@ -106,12 +59,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const returnDateTime = new Date(`${returnDate}T${returnTime}`);
 
     if (pickupDateTime < currentDateTime || returnDateTime < currentDateTime) {
-      alert("取車和還車時間不能在當前時間之前");
+      alert("Pick-up and return times cannot be before the current time.");
       return;
     }
 
     if (returnDateTime <= pickupDateTime) {
-      alert("還車時間不能早於取車時間");
+      alert("Return time cannot be earlier than pick-up time.");
       return;
     }
 
@@ -127,24 +80,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
 
       if (data.bookingId) {
-        const details = `
-          <strong>訂單號碼:</strong> ${data.bookingId}<br>
-          <strong>訂單車輛:</strong> ${data.carName}<br>
-          <strong>使用者:</strong> ${data.userName}<br>
-          <strong>建立時間:</strong> ${data.created_at}<br>
-          <strong>取車日期:</strong> ${data.pickup_date}<br>
-          <strong>還車日期:</strong> ${data.return_date}<br>
-          <strong>取車時間:</strong> ${data.pickup_time}<br>
-          <strong>還車時間:</strong> ${data.return_time}<br>
-          <strong>取車地點:</strong> ${data.pickup_loc}<br>
-          <strong>還車地點:</strong> ${data.return_loc}<br>
-          <strong>價錢:</strong> ${data.price}<br>
-          <strong>狀態:</strong> ${data.status}<br>
+        const content = `
+          <li class="mb-2">訂單編號：${data.bookingId}</li>
+          <li class="mb-2">訂單車輛：${data.carName}</li> 
+          <li class="mb-2">客戶名稱：${data.userName}</li>
+          <li class="mb-2">取車日期：${data.pickup_date}</li>
+          <li class="mb-2">還車日期：${data.return_date}</li>
+          <li class="mb-2">取車時間：${data.pickup_time}</li>
+          <li class="mb-2">還車時間：${data.return_time}</li>
+          <li class="mb-2">取車地點：${data.pickup_loc}</li>
+          <li class="mb-2">還車地點：${data.return_loc}</li>
+          <li class="mb-2">租用時數：${data.total_hours} 小時</li>
+          <li>價錢：${data.total_price} 元</li>
         `;
 
-        document.getElementById("modalBookingDetails").innerHTML = details;
+        document.getElementById("form-order-content").innerHTML = content;
         const modal = new bootstrap.Modal(
-          document.getElementById("orderSuccessModal")
+          document.getElementById("form-order")
         );
         modal.show();
 
@@ -171,9 +123,9 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (result.error) {
               alert(result.error);
             }
-          } catch (error) {
+          } catch (err) {
             console.error("Error:", error);
-            alert("系統錯誤，請稍後再試。");
+            alert("System error, please try again later.");
           }
         };
 
@@ -195,11 +147,11 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (data.error) {
         alert(data.error);
       } else if (data.status === "noauth") {
-        alert("請先登入！");
+        alert("Please log in!");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("系統錯誤，請稍後再試。");
+      alert("System error, please try again later.");
     }
   });
 });
