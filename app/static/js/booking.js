@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   bookingForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const currentDateTime = new Date();
+    const currentDateTime = new Date(new Date().getTime() + 30 * 60 * 1000);
     const pickupDate = document.getElementById("pickup-date").value;
     const pickupTime = document.getElementById("pickup-time").value;
     const returnDate = document.getElementById("return-date").value;

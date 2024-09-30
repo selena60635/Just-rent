@@ -29,17 +29,17 @@ def car_single_id(id):
 @bp.route('/profile')
 @login_required
 def profile():
-    return render_template('account-profile.html', title='My Profile')
+    return render_template('account-profile.html', user=current_user, title='My Profile')
 
 @bp.route('/orders')
 @login_required
 def orders():
-    return render_template('account-booking.html', title='My Orders')
+    return render_template('account-booking.html', user=current_user, title='My Orders')
 
 @bp.route('/favorite')
 @login_required
 def favorite():
-    return render_template('account-favorite.html', title='My Favorite Cars', favorite_cars = True)
+    return render_template('account-favorite.html', user=current_user, title='My Favorite Cars', favorite_cars = True)
 
 #auth
 @bp.route('/login', methods=['GET', 'POST'])

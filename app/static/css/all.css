@@ -375,3 +375,13 @@ i.liked {
 .tpfield-placeholder {
   color: gray;
 }
+.pending-row:hover {
+  background-color: #f8f9fa; /* 可以根據你的主題設計選擇合適的背景顏色 */
+  transition: background-color 0.2s ease; /* 添加過渡效果 */
+}
+
+/* 確保鼠標懸停的手型樣式 */
+.pending-row {
+  cursor: pointer;
+  /* background-color: #ffc8c8; */
+}

@@ -36,20 +36,15 @@
               </div>
               <div class="profile_name">
                 <h4>
-                  Monica Lucas
+                  {{ user.username }}
                   <span class="profile_username text-gray"
-                    >monica@justrent.com</span
+                    >{{ user.email }}</span
                   >
                 </h4>
               </div>
             </div>
             <div class="spacer-20"></div>
             <ul class="menu-col">
-              <li>
-                <a href="account-dashboard.html"
-                  ><i class="fa fa-home"></i>Dashboard</a
-                >
-              </li>
               <li>
                 <a href="{{ url_for('controller.profile') }}" class="active"
                   ><i class="fa fa-user"></i>My Profile</a
@@ -265,4 +260,5 @@
     </div>
   </section>
 </div>
+<script src="{{ url_for('static', filename='js/user.js') }}"></script>
 {% endblock %}

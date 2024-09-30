@@ -15,7 +15,7 @@ class Booking(db.Model):
     pick_up_loc= db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
     drop_off_loc = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
     total_price = db.Column(db.Integer, nullable=False, default=0) 
-    status = db.Column(db.String(255), nullable=False, default='Pending')
+    status = db.Column(db.String(255), nullable=False, default='pending')
     car = db.relationship('Car', back_populates='orders')
     user = db.relationship('User', backref='booking')
     pickup_location = db.relationship('Location', foreign_keys=[pick_up_loc])

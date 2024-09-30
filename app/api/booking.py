@@ -44,7 +44,7 @@ def add_order():
     return_location = Location.query.filter_by(name=return_loc).first()
 
     # 檢查是否已有該使用者的未完成訂單，限制一位使用者只能一次租用一台車
-    # existing_booking_user = Booking.query.filter_by(user_id=user_id, car_id=car_id, status='Pending').first()
+    # existing_booking_user = Booking.query.filter_by(user_id=user_id, car_id=car_id, status='pending').first()
     # if existing_booking_user:
     #     return jsonify({"error": "您已經有一筆未完成的訂單，無法再次租用此車輛。"})
 
@@ -77,7 +77,7 @@ def add_order():
         pick_up_loc=pickup_location.id,
         drop_off_loc=return_location.id,
         total_price=total_price,
-        status='Pending'
+        status='pending'
     )
 
     # 新增資料到資料庫
@@ -114,6 +114,26 @@ def cancel_order(orderId):
     db.session.commit()
     return jsonify({"message": "Order canceled."})
 
+@bp.route('/api/bookings', methods=['GET'])
+def get_orders():
+        bookings = Booking.query.filter_by(user_id=current_user.id).all() 
+        bookings_data = [
+            {
+                'id': booking.id,
+                'car_name': booking.car.name,
+                'pickup_location': booking.pickup_location.name,
+                'return_location': booking.return_location.name,
+                'pickup_date': booking.pickup_date.strftime('%Y-%m-%d'),
+                'pickup_time': booking.pickup_time.strftime('%H:%M:%S'),
+                'return_date': booking.return_date.strftime('%Y-%m-%d'),
+                'return_time': booking.return_time.strftime('%H:%M:%S'),
+                'status': booking.status 
+            }
+            for booking in bookings
+        ]
+        return jsonify(bookings_data) 
+
+
 
 
 #處理付款
@@ -133,13 +153,13 @@ def process_payment():
 
     # 檢查是否取得必要的參數
     if not prime or not amount or not user_name or not user_email:
-        return jsonify({'message': '缺少必要的付款資訊'}), 400
+        return jsonify({'message': 'Please provide the required payment information.'}), 400
      # 檢查是否已付款
     booking = Booking.query.get(booking_id)
     if not booking or booking.status == 'scheduled':
 
         return jsonify({
-            'message':"無效的訂單或此訂單已付款，請勿重複付款"
+            'message':"Invalid order or this order has already been paid, please do not make duplicate payments."
         }), 400
 
     # 建立付款的卡片持有人資料
@@ -169,13 +189,13 @@ def process_payment():
         db.session.commit()
 
         return jsonify({
-            'message': '付款成功',
+            'message': 'Payment successful',
             'transaction_id': response_data['rec_trade_id']
         }), 200
     else:
         return jsonify({
-            'error': '付款失敗',
-            'message': response_data.get('msg', '未知錯誤')
+            'error': 'Payment failed',
+            'message': response_data.get('msg', 'Unknown error')
         }), 400
 
 
