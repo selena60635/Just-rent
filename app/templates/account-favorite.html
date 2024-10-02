@@ -27,10 +27,7 @@
           <div class="card p-4 rounded-5">
             <div class="profile_avatar">
               <div class="profile_img">
-                <img
-                  src="{{ url_for('static', filename='images/profile/1.jpg') }}"
-                  alt=""
-                />
+                <img src="{{ user.avatar(128) }}" alt="" />
               </div>
               <div class="profile_name">
                 <h4>
@@ -69,8 +66,8 @@
 
         <div class="col-lg-9">
           <div class="row" id="favorite-cars"></div>
-          <button class="prev-favorites">上一頁</button>
-          <button class="next-favorites">下一頁</button>
+          <button class="prev-favorites btn btn-primary me-4">上一頁</button>
+          <button class="next-favorites btn btn-primary">下一頁</button>
         </div>
       </div>
     </div>
