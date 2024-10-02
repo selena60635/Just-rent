@@ -89,7 +89,9 @@ def add_order():
         "carId": new_booking.car_id,
         "carName": new_booking.car.name,
         "userId": new_booking.user_id,
-        "userName": new_booking.user.username,
+        "userName": new_booking.user.username, 
+        "userEmail": new_booking.user.email,  
+        "userPhone": new_booking.user.phone,
         "created_at": new_booking.created_at.strftime("%Y-%m-%d %H:%M:%S"),
         "pickup_date": new_booking.pickup_date.strftime("%Y-%m-%d"),
         "return_date": new_booking.return_date.strftime("%Y-%m-%d"),
@@ -147,12 +149,13 @@ def process_payment():
     data = request.json
     prime = data.get('prime')
     amount = data.get('amount')
-    user_name = data.get('user_name')
-    user_email = data.get('user_email')
     booking_id = data.get('booking_id')
+    user_name = current_user.username
+    user_email = current_user.email
+    phone_number = current_user.phone
 
     # 檢查是否取得必要的參數
-    if not prime or not amount or not user_name or not user_email:
+    if not prime or not amount or not user_name or not user_email or not phone_number:
         return jsonify({'message': 'Please provide the required payment information.'}), 400
      # 檢查是否已付款
     booking = Booking.query.get(booking_id)
@@ -164,7 +167,7 @@ def process_payment():
 
     # 建立付款的卡片持有人資料
     card_holder_data = tappay.Models.CardHolderData(
-        phone_number='+886912345678', 
+        phone_number=phone_number, 
         name=user_name,
         email=user_email
     )

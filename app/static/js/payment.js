@@ -65,13 +65,11 @@ document
       const bookingData = document.getElementById("booking-data");
       const amount = bookingData.dataset.price;
       const bookingId = bookingData.dataset.bookingId;
-      // 構造付款資料
+      // 付款資料
       const paymentData = {
         prime: prime,
         amount: amount,
         booking_id: bookingId,
-        user_name: "Selena",
-        user_email: "selena606352000@gmail.com",
       };
 
       // 發送請求到後端 API
