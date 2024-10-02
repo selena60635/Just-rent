@@ -15,7 +15,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(255), nullable=False)
     username = db.Column(db.String(255), nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    phone = db.Column(db.Integer, nullable=False, default=0)
+    phone = db.Column(db.String(255), nullable=False, default="0912345678")
     language = db.Column(db.String(255), nullable=False, default='English')
     hour_format = db.Column(db.String(255), nullable=False, default='24-hour')
     role = db.Column(db.String(255), nullable=False, default='basic')

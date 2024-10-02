@@ -80,3 +80,52 @@ function displayBooking() {
 }
 
 displayBooking();
+
+async function editProfile() {
+  const form = document.getElementById("form-create-item");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    // 取德表單數據
+    const formData = new FormData(this);
+    const phone = formData.get("phone");
+    const password = formData.get("user_password");
+    const rePassword = formData.get("user_password_re-enter");
+
+    // 電話號碼格式驗證
+    const phonePattern = /^09\d{8}$/;
+    if (!phonePattern.test(phone)) {
+      alert("Phone number must be 10 digits and start with 09.");
+      return;
+    }
+
+    // 密碼驗證
+    if (password && password !== rePassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/user/edit`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      // 處理回傳的狀態碼
+      if (res.status === 200) {
+        alert(data.message || "Profile updated successfully");
+      } else if (res.status === 400 || res.status === 401) {
+        alert(data.message || "An error occurred, please check your input");
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      alert("An unexpected error occurred. Please try again.");
+    }
+  });
+}
+
+// 初始化表單提交處理
+editProfile();
