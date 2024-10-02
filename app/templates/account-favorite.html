@@ -44,7 +44,9 @@
             <div class="spacer-20"></div>
             <ul class="menu-col">
               <li>
-                <a href=""><i class="fa fa-user"></i>My Profile</a>
+                <a href="{{ url_for('controller.profile') }}"
+                  ><i class="fa fa-user"></i>My Profile</a
+                >
               </li>
               <li>
                 <a href="{{ url_for('controller.orders') }}"
@@ -57,7 +59,7 @@
                 >
               </li>
               <li>
-                <a href="{{ url_for('controller.login') }}"
+                <a href="{{ url_for('controller.logout') }}"
                   ><i class="fa fa-sign-out"></i>Sign Out</a
                 >
               </li>

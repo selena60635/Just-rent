@@ -126,6 +126,3 @@ async function editProfile() {
     }
   });
 }
-
-// 初始化表單提交處理
-editProfile();
