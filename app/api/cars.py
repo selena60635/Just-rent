@@ -1,15 +1,16 @@
 from app import db
 from app.api import bp
 from flask import jsonify, current_app, request
-from sqlalchemy import or_, text
+from sqlalchemy import or_
 from app.models.car import Car
 from app.models.user import likes 
 from app.models.location import Location 
 from flask_login import current_user, login_required
 from functools import wraps
-from app.models import Car
+from app.models import Car,LevelPrice
 
 
+#取得所有汽車
 @bp.route('/api/cars', methods=['GET'])
 def get_cars():
     page = request.args.get('page', default=1, type=int)
@@ -21,6 +22,7 @@ def get_cars():
 
     conditions = []
 
+    # 處理篩選條件
     if body:
         bodies = body.split(',')
         body_condition = or_(*[Car.body == b for b in bodies])
@@ -49,21 +51,24 @@ def get_cars():
                 engine_condition.append(Car.displacement > 6000)
         conditions.append(or_(*engine_condition))
 
+    # 查詢汽車資料並取得單價
+    query = db.session.query(Car).join(LevelPrice, Car.price == LevelPrice.id)
 
+    # 若有設定最大價格篩選，將條件加入查詢
     if max_price:
-        price_condition = Car.price.between(0, int(max_price))
-        conditions.append(price_condition)
+        conditions.append(LevelPrice.price <= int(max_price))
 
-    query = db.session.query(Car)
     if conditions:
         query = query.where(*conditions)
 
+    # 進行分頁
     pagination = query.paginate(page=page, per_page=per_page)
-
     cars = pagination.items
 
-    response = {
-        "cars": [{
+    cars_data = []
+    for car in cars:
+        price = car.level_price.price if car.level_price else 0 
+        cars_data.append({
             "id": car.id,
             "name": car.name,
             "brand": car.brand,
@@ -73,25 +78,41 @@ def get_cars():
             "displacement": car.displacement,
             "seat": car.seat,
             "door": car.door,
-            "price": car.price,
+            "price": price,
             "is_liked": current_user.is_authenticated and current_user in car.liked_by,
             "liked_count": car.liked_by.count() or 0,
-        } for car in cars],
+        })
+
+    return jsonify({
+        "cars": cars_data,
         "has_next": pagination.has_next
-    }
+    })
 
-    # 以 JSON 格式回傳
-    return jsonify(response)
-
-
+#取得單一汽車
 @bp.route('/api/car/<int:id>')
 def get_car(id):
-    sql = text('SELECT * FROM cars WHERE id = :car_id')
-    result = db.session.execute(sql, {'car_id': id})
-    car = result.fetchone()
-    car_dict = dict(car._mapping)
-    return jsonify(car_dict)
+    car = db.session.query(Car).filter(Car.id == id).first()
 
+    if not car:
+        return jsonify({"error": "Car not found"}), 404
+
+    car_dict = {
+        "id": car.id,
+        "name": car.name,
+        "brand": car.brand,
+        "model": car.model,
+        "year": car.year,
+        "displacement": car.displacement,
+        "body": car.body,
+        "seat": car.seat,
+        "door": car.door,
+        "car_length": car.car_length,
+        "wheelbase": car.wheelbase,
+        "power_type": car.power_type,
+        "price": car.level_price.price 
+    }
+
+    return jsonify(car_dict)
 
 
 def login_required_auth(f):
@@ -114,7 +135,7 @@ def toggle_like(id):
         db.session.commit()
         return jsonify({'status': 'liked', 'like_count': car.liked_by.count()})
 
-
+#取得我的最愛汽車
 @bp.route('/api/favorite_cars', methods=['GET'])
 @login_required
 def get_favorite_cars():
@@ -137,7 +158,7 @@ def get_favorite_cars():
             "displacement": car.displacement,
             "seat": car.seat,
             "door": car.door,
-            "price": car.price,
+            "price": car.level_price.price ,
             "is_liked": True, 
             "liked_count": car.liked_by.count() or 0,
         } for car in cars],

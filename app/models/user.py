@@ -1,8 +1,7 @@
 from app import db, login
-import sqlalchemy.orm as so
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-# from app.models.car import Car
+from hashlib import md5
 
 likes = db.Table('likes',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
@@ -16,7 +15,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(255), nullable=False)
     username = db.Column(db.String(255), nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
-    phone = db.Column(db.Integer, nullable=False, default=0)
+    phone = db.Column(db.String(255), nullable=False, default="0912345678")
     language = db.Column(db.String(255), nullable=False, default='English')
     hour_format = db.Column(db.String(255), nullable=False, default='24-hour')
     role = db.Column(db.String(255), nullable=False, default='basic')
@@ -28,6 +27,10 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={128}'
 
 @login.user_loader
 def load_user(id):

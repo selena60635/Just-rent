@@ -1848,8 +1848,6 @@
       width: "100%",
     });
 
-    /* detepicker */
-
     // $("#date-picker").daterangepicker({
     //   singleDatePicker: true,
     //   showISOWeekNumbers: true,
