@@ -74,7 +74,7 @@
                   id="form-create-item"
                   class="form-border"
                   method="post"
-                  action="/api/user/edit/{{ user.id }}"
+                  action="/api/user/edit"
                 >
                   <div class="de_tab tab_simple">
                     <ul class="de_nav">
@@ -156,10 +156,10 @@
     </div>
   </section>
 </div>
-<script src="{{ url_for('static', filename='js/user.js') }}">
-  document.addEventListener("DOMContentLoaded", function() {
+<script src="{{ url_for('static', filename='js/user.js') }}"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
     editProfile();
   });
 </script>
-
 {% endblock %}

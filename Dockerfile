@@ -6,6 +6,7 @@ WORKDIR /app
 
 # 複製 requirements.txt 並安裝相依套件
 COPY requirements.txt .
+RUN apt-get update && apt-get install -y git
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
