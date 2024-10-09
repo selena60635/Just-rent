@@ -1,0 +1,137 @@
+# services:
+#   web:
+#     build: .
+#     container_name: just_rent_flask
+#     # restart: always
+#     environment:
+#       APP_NAME: FlaskApp
+#       DATABASE_URL: mysql+pymysql://root:papy10319@db/just_rent
+#     expose:
+#       - 8000
+#     ports:
+#       - "8000:8000"
+#     depends_on:
+#       - db
+#     # networks:
+#     #   - just_rent_network
+
+#   db:
+#     image: mysql:8.0
+#     container_name: just_rent_mysql
+#     volumes:
+#       - ./mysql-data:/var/lib/mysql
+#     environment:
+#       MYSQL_ROOT_PASSWORD: papy10319
+#       MYSQL_DATABASE: just_rent
+#       MYSQL_PASSWORD: papy10319
+#       MYSQL_USER: root
+#       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+#       MYSQL_SSL_MODE: DISABLED
+#       MYSQLD_OPTS: "--skip-ssl"
+#     # ports:
+#     #   - 3307:3306
+#     # networks:
+#     #   - just_rent_network
+
+#   nginx:
+#     build: ./nginx
+#     container_name: just_rent_nginx
+#     ports:
+#       - "80:80"
+#       - "443:443"
+#     depends_on:
+#       - web
+# # volumes:
+# #   mysql_data:
+
+# services:
+#   web:
+#     build: .
+#     container_name: just_rent_flask
+#     restart: always
+#     environment:
+#       APP_NAME: FlaskApp
+#       DATABASE_URL: mysql+pymysql://root:papy10319@db/just_rent
+#     expose:
+#       - 8000
+#     ports:
+#       - "8000:8000"
+#     depends_on:
+#       - db
+#     networks:
+#       - just_rent_network
+
+#   db:
+#     image: mysql:8.0
+#     container_name: just_rent_mysql
+#     volumes:
+#       - ./mysql-data:/var/lib/mysql
+#     environment:
+#       MYSQL_ROOT_PASSWORD: papy10319
+#       MYSQL_DATABASE: just_rent
+#       # MYSQL_PASSWORD: papy10319
+#       # MYSQL_USER: root
+#       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+#       MYSQL_SSL_MODE: DISABLED
+#       MYSQLD_OPTS: "--skip-ssl"
+#     ports:
+#       - 3307:3306
+#     networks:
+#       - just_rent_network
+
+#   nginx:
+#     build: ./nginx
+#     container_name: just_rent_nginx
+#     ports:
+#       - "80:80"
+#       - "443:443"
+#     depends_on:
+#       - web
+#     networks:
+#       - just_rent_network
+
+# networks:
+#   just_rent_network:
+
+services:
+  web:
+    image: just_rent_selina:0.0.7
+    # build: .
+    # environment:
+    #   FLASK_APP: just_rent.py
+    #   FLASK_RUN_HOST: 0.0.0.0
+    #   DATABASE_URL: mysql+pymysql://root:papy10319@db/just_rent
+    #   ENVIRONMENT: container
+    env_file: .env.production
+
+    volumes:
+      - .:/my_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: papy10319
+      MYSQL_DATABASE: just_rent
+      # MYSQL_USER: root
+      # MYSQL_PASSWORD: papy10319
+      MYSQL_SSL_MODE: DISABLED
+      MYSQLD_OPTS: "--skip-ssl"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      # - "443:443"
+    depends_on:
+      - web
+
+volumes:
+  mysql_data:

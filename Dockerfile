@@ -1,20 +1,30 @@
-# 使用 Python 3.9 slim 作為基礎映像
+
+# FROM python:3.9-slim
+# WORKDIR /app
+# # ADD . /app
+# COPY . /app
+# RUN pip install --upgrade pip
+# RUN pip install -r requirements.txt
+# CMD ["gunicorn", "-b", "0.0.0.0:8000", "just_rent:app"]
 FROM python:3.9-slim
 
-# 設定工作目錄
-WORKDIR /app
+# # 設定工作目錄
+WORKDIR /my_app
 
-# 複製 requirements.txt 並安裝相依套件
+# # 將需求文件複製到容器中
 COPY requirements.txt .
-RUN apt-get update && apt-get install -y git
-RUN pip install --upgrade pip
+
+# # 安裝套件
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 複製專案的所有檔案到容器
+# # 將所有應用程式文件複製到工作目錄
 COPY . .
 
-# 暴露 Gunicorn 使用的 8000 端口
+
+# # # 應用程式運行的端口
 EXPOSE 8000
 
-# 使用 Gunicorn 啟動 Flask 應用
+
+# # 使用 Gunicorn 啟動 Flask 應用
+# CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "just_rent:app"]
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "just_rent:app"]
